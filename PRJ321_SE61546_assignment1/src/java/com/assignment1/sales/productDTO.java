@@ -77,10 +77,7 @@ public class productDTO implements Serializable {
             return false;
         }
         final productDTO other = (productDTO) obj;
-        if (!Objects.equals(this.productID, other.productID)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.productID, other.productID);
     }
 
     @Override
