@@ -14,39 +14,31 @@
         <title>Search Order</title>
     </head>
     <body>
-        <%
-
-        AccountDTO loginUser = (AccountDTO) session.getAttribute("LOGGINUSR");
-
-        if(loginUser!=null) {
-            %>
-            <font color="red">
-            Welcome, <%= loginUser.getAccountID() %>
-            </font>
-            <%
-        }
-        %>
+        <%@include file="welcome.jsp" %>
         
         <h1>Search Order</h1>
         
-        <form action="ControllerServlet" method="POST">
+        <form action="Controller" method="POST">
             <table>
                 <tr>
                     <td width="80px">From Date:</td>
                     <td width="200px">
-                        <input style="width:200px;" type="text" name="txtFromDate" value="" />
+                        <input style="width:200px;" type="text" 
+                               name="txtFromDate" value="" />
                     </td>
                 </tr>
                 <tr>
                     <td width="80px">To Date:</td>
                     <td width="200px">
-                        <input style="width:200px;" type="text" name="txtToDate" value="" />
+                        <input style="width:200px;" type="text" 
+                               name="txtToDate" value="" />
                     </td>
                 </tr>
                 <tr>
                     <td width="80px" ></td>
                     <td>
-                        <input type="submit" style="width:49%;" value="Search" name="btAction" />
+                        <input type="submit" style="width:49%;"
+                               value="Search" name="btAction" />
                         <input type="reset" style="width:49%;" value="Reset" />
                     </td>
                 </tr>

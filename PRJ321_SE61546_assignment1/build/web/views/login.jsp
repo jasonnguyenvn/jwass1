@@ -7,11 +7,6 @@
 <%@page import="com.assignment1.account.AccountLoginError"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
         <title>Login Page - occurs errors</title>
@@ -22,7 +17,8 @@ and open the template in the editor.
         <h1>Login Page - occurs errors</h1>
         
         <%
-            AccountLoginError errorbj = (AccountLoginError) request.getAttribute("ERROROBJ");
+            AccountLoginError errorbj = (AccountLoginError) request
+                                            .getAttribute("ERROROBJ");
             if(errorbj!=null) {
                 %>
                
@@ -85,7 +81,8 @@ and open the template in the editor.
                 <tr>
                     <td width="80px">Password:</td>
                     <td width="200px">
-                        <input style="width:200px;" type="password" name="password" value="" />
+                        <input style="width:200px;" type="password" 
+                               name="password" value="" />
                         <font color="red">
                         <%
                             if(errorbj!=null) {
@@ -100,7 +97,8 @@ and open the template in the editor.
                 <tr>
                     <td width="80px" ></td>
                     <td>
-                        <input type="submit" style="width:49%;" value="Login" name="btAction" />
+                        <input type="submit" style="width:49%;" value="Login" 
+                               name="btAction" />
                         <input type="reset" style="width:49%;" value="Reset" />
                     </td>
                 </tr>

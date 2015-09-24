@@ -24,8 +24,8 @@ import javax.servlet.http.HttpSession;
  * @author Hau
  */
 public class NullServlet extends HttpServlet {
-    private final String loginPage = "views/login.jsp";
-    private final String searchPage = "views/search.jsp";
+    private final String loginPage = "/views/login.jsp";
+    private final String searchPage = "/views/search.jsp";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,39 +42,17 @@ public class NullServlet extends HttpServlet {
             HttpSession session = request.getSession(false);
             
             String url = "Controller?btAction=LoginPage";
-            if(session == null) {
-                /*AccountLoginError errorbj = (AccountLoginError) request.getAttribute("ERROROBJ");
-                
-                if(errorbj!=null) {
-                    url = loginPage;
-                    RequestDispatcher rd = request.getRequestDispatcher(url);
-                    rd.forward(request, response);
-                }*/
-                
-                response.sendRedirect(url);
-                return;
-            }
-            
-
-            AccountDTO loginUser = (AccountDTO) session.getAttribute("LOGGINUSR");
-
-            if(loginUser==null) {
-                response.sendRedirect(url);
-                return;
-            }
-
-            AccountDAO dao = new AccountDAO();
+            CheckLoginObj checkLogin = new CheckLoginObj();
             try {
-                if(dao.checkLogin(loginUser.getAccountID(), 
-                        loginUser.getPassword())==null) {
+                if(checkLogin.checkLogin(request) == false) {
                     response.sendRedirect(url);
                     return;
                 }
             } catch (ClassNotFoundException | SQLException ex) {
                 log(ex.getMessage());
                 response.sendError(500);
-                return; 
-            } 
+            }
+
 
             RequestDispatcher rd = request.getRequestDispatcher(searchPage);
             rd.forward(request, response);

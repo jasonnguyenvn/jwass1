@@ -9,6 +9,7 @@ package com.assignment1.account.servlets;
 import com.assignment1.account.AccountDAO;
 import com.assignment1.account.AccountDTO;
 import com.assignment1.account.AccountLoginError;
+import com.assignment1.common.CheckLoginObj;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -26,7 +27,7 @@ import javax.servlet.http.HttpSession;
  * @author Hau
  */
 public class LoginServlet extends HttpServlet {
-    private final String loginPage = "../views/login.jsp";
+    private final String loginPage = "/views/login.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

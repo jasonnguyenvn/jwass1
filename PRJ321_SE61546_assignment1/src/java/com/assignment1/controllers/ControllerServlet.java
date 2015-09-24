@@ -6,9 +6,10 @@
 
 package com.assignment1.controllers;
 
-import com.assignment1.account.AccountLoginError;
+import com.assignment1.common.CheckLoginObj;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,12 +21,12 @@ import javax.servlet.http.HttpServletResponse;
  * @author Hau
  */
 public class ControllerServlet extends HttpServlet {
-    private final String nullServlet = "Controllers/NullServlet";
-    private final String loginServlet = "Controllers/LoginServlet";
+    private final String nullServlet = "Actions/NullServlet";
+    private final String loginServlet = "Actions/LoginServlet";
     private final String searchPage = "views/search.jsp";
     private final String signUpPage = "views/signUp.html";
     private final String loginPage = "views/login.html";
-    private final String registerServlet = "Controllers/RegisterServlet";
+    private final String registerServlet = "Actions/RegisterServlet";
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -50,14 +51,37 @@ public class ControllerServlet extends HttpServlet {
                 return;
             }
             
+            CheckLoginObj checkLogin = new CheckLoginObj();
+            boolean isLogin = false;
+            try {
+                isLogin = checkLogin.checkLogin(request);
+            } catch (ClassNotFoundException | SQLException ex) {
+                log(ex.getMessage());
+                response.sendError(500);
+            }
+            
             String url = "";
             if(button.equals("Login")) {
                 url = loginServlet;
             } else if(button.equals("LoginPage")) {
+                if(isLogin) {
+                    response.sendRedirect("Controller");
+                    return;
+                }
+
                 url = loginPage;
             } else if(button.equals("searchPage")) {
+                if(isLogin==false) {
+                    response.sendRedirect("Controller");
+                    return;
+                }
+                
                 url = searchPage;
             } else if(button.equals("signUp")) {
+                if(isLogin) {
+                    response.sendRedirect("Controller");
+                    return;
+                }
                 url = signUpPage;
             } else if(button.equals("Sign Up!")) {
                 url = registerServlet;

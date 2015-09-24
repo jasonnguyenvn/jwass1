@@ -20,34 +20,39 @@
                 <tr>
                     <td width="80px">Username:</td>
                     <td width="200px">
-                        <input style="width:200px;" type="text" name="accountID" value="" />
+                        <input style="width:200px;" type="text" 
+                               name="accountID" value="" />
                         (3 - 10 characters)
                     </td>
                 </tr>
                 <tr>
                     <td width="80px">Full name:</td>
                     <td width="200px">
-                        <input style="width:200px;" type="text" name="customerName" value="" />
+                        <input style="width:200px;" type="text" 
+                               name="customerName" value="" />
                         (3 - 50 characters)
                     </td>
                 </tr>
                 <tr>
                     <td width="80px">Password:</td>
                     <td width="200px">
-                        <input style="width:200px;" type="password" name="password" value="" />
+                        <input style="width:200px;" type="password" 
+                               name="password" value="" />
                         (6 - 20 characters)
                     </td>
                 </tr>
                 <tr>
                     <td width="80px">Confirm:</td>
                     <td width="200px">
-                        <input style="width:200px;" type="password" name="txtConfirm" value="" />
+                        <input style="width:200px;" type="password"
+                               name="txtConfirm" value="" />
                     </td>
                 </tr>
                 <tr>
                     <td width="80px">Email:</td>
                     <td width="200px">
-                        <input style="width:200px;" type="text" name="email" value="" />
+                        <input style="width:200px;" type="text"
+                               name="email" value="" />
                         (max 50 characters)
                     </td>
                 </tr>
@@ -55,7 +60,8 @@
                 <tr>
                     <td width="80px" ></td>
                     <td>
-                        <input type="submit" style="width:49%;" value="Sign Up!" name="btAction" />
+                        <input type="submit" style="width:49%;" 
+                               value="Sign Up!" name="btAction" />
                         <input type="reset" style="width:49%;" value="Reset" />
                     </td>
                 </tr>

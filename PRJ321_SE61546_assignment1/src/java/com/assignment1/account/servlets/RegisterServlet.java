@@ -8,6 +8,7 @@ package com.assignment1.account.servlets;
 
 import com.assignment1.account.AccountDAO;
 import com.assignment1.account.AccountInsertError;
+import com.assignment1.common.CheckLoginObj;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -22,8 +23,8 @@ import javax.servlet.http.HttpServletResponse;
  * @author Hau
  */
 public class RegisterServlet extends HttpServlet {
-    private final String signUpPage = "../views/signUp.jsp";
-    private final String loginPage = "../views/login.html";
+    private final String signUpPage = "/views/signUp.jsp";
+    private final String loginPage = "/views/login.html";
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
