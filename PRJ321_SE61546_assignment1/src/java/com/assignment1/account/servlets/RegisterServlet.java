@@ -6,9 +6,13 @@
 
 package com.assignment1.account.servlets;
 
+import com.assignment1.account.accountDAO;
 import com.assignment1.account.accountError;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -45,12 +49,20 @@ public class RegisterServlet extends HttpServlet {
                 String password = request.getParameter("password").trim();
                 String txtConfirm = request.getParameter("txtConfirm").trim();
                 
+                accountDAO dao = new accountDAO();
+                
+                boolean result = dao.createAccount(accountID, customerName,
+                                                            password, password);
                 
                 
                 
             } catch (NullPointerException ex) {
                 log("Someone send bad request: " + ex.getMessage());
                 errorObj.setNullPointer("BAD REQUEST");
+            } catch (ClassNotFoundException ex) {
+                log(ex.getMessage());
+            } catch (SQLException ex) {
+                Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             
             

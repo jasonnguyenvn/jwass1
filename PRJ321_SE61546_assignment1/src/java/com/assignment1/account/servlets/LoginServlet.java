@@ -70,9 +70,13 @@ public class LoginServlet extends HttpServlet {
             try {
                 dto = dao.checkLogin(accountID, password);
                 
-            } catch (    ClassNotFoundException | SQLException ex) {
+            } catch (ClassNotFoundException ex) {
+                log(ex.getMessage());
+                response.sendError(500);
+            } catch (SQLException ex) {
                 log(ex.getMessage());
             }
+            
             
             if (dto!=null) {
                 HttpSession session = request.getSession();

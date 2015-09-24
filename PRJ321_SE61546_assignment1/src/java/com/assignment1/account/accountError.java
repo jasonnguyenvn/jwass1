@@ -17,7 +17,6 @@ public class accountError {
     private String nullUsername;
     private String nullPassword;
     private String nullPointer;
-
     public boolean isRaisedErrors() {
         return raisedErrors;
     }
@@ -63,6 +62,7 @@ public class accountError {
         this.nullPointer = nullPointer;
         this.setRaisedErrors(true);
     }
+    
     
     
     
