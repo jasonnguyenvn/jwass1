@@ -4,6 +4,7 @@
     Author     : Hau
 --%>
 
+<%@page import="com.assignment1.account.accountError"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <!--
@@ -19,18 +20,61 @@ and open the template in the editor.
     </head>
     <body>
         <h1>Login Page</h1>
-        <form action="ControllerServlet" method="POST">
+        
+        <%
+            accountError errorbj = (accountError) request.getAttribute("ERROROBJ");
+            if(errorbj!=null) {
+                %>
+               
+                <%
+                    if(errorbj.getInvalidUsernamePassword()!=null) {
+                        %>
+                        <h3> <font color="red">
+                            <%= errorbj.getInvalidUsernamePassword() %>
+                        </font></h3>
+                        <%
+                    }
+                %>
+                <%
+            }
+            String accountID = request.getParameter("accountID");
+        %>
+        
+        <form action="Controller" method="POST">
             <table>
                 <tr>
                     <td width="80px">Username:</td>
                     <td width="200px">
-                        <input style="width:200px;" type="text" name="txtUsername" value="" />
+                        <input style="width:200px;" type="text" name="accountID" 
+                               value="<%
+                                if(accountID!=null) {
+                                    out.print(accountID);
+                                }
+                               %>" />
+                        <font color="red">
+                        <%
+                            if(errorbj!=null) {
+                                if(errorbj.getNullUsername()!=null) {
+                                    out.print(errorbj.getNullUsername());
+                                }
+                            }
+                        %>
+                        </font>
                     </td>
                 </tr>
                 <tr>
                     <td width="80px">Password:</td>
                     <td width="200px">
-                        <input style="width:200px;" type="password" name="txtPassword" value="" />
+                        <input style="width:200px;" type="password" name="password" value="" />
+                        <font color="red">
+                        <%
+                            if(errorbj!=null) {
+                                if(errorbj.getNullPassword()!=null) {
+                                    out.print(errorbj.getNullPassword());
+                                }
+                            }
+                        %>
+                        </font>
                     </td>
                 </tr>
                 <tr>
