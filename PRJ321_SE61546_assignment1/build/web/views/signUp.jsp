@@ -48,7 +48,7 @@
                     <td width="80px">Email:</td>
                     <td width="200px">
                         <input style="width:200px;" type="text" name="email" value="" />
-                        (abc@email.com , max 50 characters)
+                        (max 50 characters)
                     </td>
                 </tr>
                 

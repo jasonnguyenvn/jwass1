@@ -15,7 +15,7 @@ public class AccountLoginError extends AccountErrorBaseClass {
     private String invalidUsernamePasswordErr;
     private String nullUsernameErr;
     private String nullPasswordErr;
-    
+    private String permissionDeniedErr;
     
 
     public String getInvalidUsernamePasswordErr() {
@@ -44,6 +44,17 @@ public class AccountLoginError extends AccountErrorBaseClass {
         this.nullPasswordErr = nullPassword;
         this.setRaisedErrors(true);
     }
+
+    public String getPermissionDeniedErr() {
+        return permissionDeniedErr;
+    }
+
+    public void setPermissionDeniedErr(String permissionDeniedErr) {
+        this.permissionDeniedErr = permissionDeniedErr;
+        this.setRaisedErrors(true);
+    }
+    
+    
     
     
 }

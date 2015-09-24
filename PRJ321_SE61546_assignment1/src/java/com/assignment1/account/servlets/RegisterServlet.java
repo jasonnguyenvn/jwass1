@@ -44,11 +44,14 @@ public class RegisterServlet extends HttpServlet {
             String customerName = "";
             String password = "";
             String txtConfirm = "";
+            String email = "";
+            
             try {
                 accountID = request.getParameter("accountID").trim();
                 customerName = request.getParameter("customerName").trim();
                 password = request.getParameter("password").trim();
                 txtConfirm = request.getParameter("txtConfirm").trim();
+                email = request.getParameter("email").trim();
                 
             } catch (NullPointerException ex) {
                 log("Someone send bad request: " + ex.getMessage());
@@ -57,19 +60,37 @@ public class RegisterServlet extends HttpServlet {
             
             
             if(accountID.length()<3 || accountID.length()>10) {
+                errorObj.setUsernameLengthErr("Username must has 3 - 10 characters");
+                
             }
             
+            if(customerName.length()<3 || customerName.length()>50) {
+                errorObj.setCustomerNameLengthErr("Full name must has 3 - 50 characters");
+                
+            }
+            
+            if(password.length()<6 || password.length()>20) {
+                errorObj.setPasswordLengthErr("Password must has 6 - 20 characters");
+                
+            } else if (txtConfirm.equals(password) == false) {
+                errorObj.setConfimNotMatchedErr("Confirm and password are not matched");
+            }
+            
+            
+            if(email.length()>50) {
+                errorObj.setEmailLengthErr("Email cannot has more 50 characters.");
+            }
             
             try {
                 AccountDAO dao = new AccountDAO();
                 boolean result = dao.createAccount(accountID, customerName,
-                                                            password, password);
+                                                            password, email);
             } catch (ClassNotFoundException ex) {
                 log(ex.getMessage());
                 response.sendError(500);
             } catch (SQLException ex) {
                 log(ex.getMessage());
-                errorObj.setUsernameEmailExisted("Username or Email existed.");
+                errorObj.setUsernameEmailExisted("Username or Email existed");
             }
             
             

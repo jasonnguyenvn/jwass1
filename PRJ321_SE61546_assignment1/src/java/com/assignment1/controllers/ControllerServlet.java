@@ -22,7 +22,10 @@ import javax.servlet.http.HttpServletResponse;
 public class ControllerServlet extends HttpServlet {
     private final String nullServlet = "NullServlet";
     private final String loginServlet = "LoginServlet";
-    private final String searchPage = "search.jsp";
+    private final String searchPage = "views/search.jsp";
+    private final String signUpPage = "views/signUp.html";
+    private final String loginPage = "views/login.html";
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -49,10 +52,15 @@ public class ControllerServlet extends HttpServlet {
             String url = "";
             if(button.equals("Login")) {
                 url = loginServlet;
+            } else if(button.equals("LoginPage")) {
+                url = loginPage;
             } else if(button.equals("searchPage")) {
                 url = searchPage;
+            } else if(button.equals("signUp")) {
+                url = signUpPage;
             } else {
                 response.sendError(404);
+                return;
             }
             
             RequestDispatcher rd = request.getRequestDispatcher(url);

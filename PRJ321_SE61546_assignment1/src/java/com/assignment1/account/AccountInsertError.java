@@ -11,6 +11,7 @@ package com.assignment1.account;
  */
 public class AccountInsertError extends AccountErrorBaseClass {
     private String usernameLengthErr;
+    private String customerNameLengthErr;
     private String passwordLengthErr;
     private String confimNotMatchedErr;
     private String emailLengthErr;
@@ -34,6 +35,7 @@ public class AccountInsertError extends AccountErrorBaseClass {
 
     public void setUsernameLengthErr(String usernameLengthErr) {
         this.usernameLengthErr = usernameLengthErr;
+        this.setRaisedErrors(true);
     }
 
     public String getPasswordLengthErr() {
@@ -42,6 +44,7 @@ public class AccountInsertError extends AccountErrorBaseClass {
 
     public void setPasswordLengthErr(String passwordLengthErr) {
         this.passwordLengthErr = passwordLengthErr;
+        this.setRaisedErrors(true);
     }
 
     public String getConfimNotMatchedErr() {
@@ -50,6 +53,7 @@ public class AccountInsertError extends AccountErrorBaseClass {
 
     public void setConfimNotMatchedErr(String confimNotMatchedErr) {
         this.confimNotMatchedErr = confimNotMatchedErr;
+        this.setRaisedErrors(true);
     }
 
     public String getEmailLengthErr() {
@@ -58,6 +62,7 @@ public class AccountInsertError extends AccountErrorBaseClass {
 
     public void setEmailLengthErr(String emailLengthErr) {
         this.emailLengthErr = emailLengthErr;
+        this.setRaisedErrors(true);
     }
 
     public String getInvalidEmailErr() {
@@ -66,6 +71,16 @@ public class AccountInsertError extends AccountErrorBaseClass {
 
     public void setInvalidEmailErr(String invalidEmailErr) {
         this.invalidEmailErr = invalidEmailErr;
+        this.setRaisedErrors(true);
+    }
+
+    public String getCustomerNameLengthErr() {
+        return customerNameLengthErr;
+    }
+
+    public void setCustomerNameLengthErr(String customerNameLengthErr) {
+        this.customerNameLengthErr = customerNameLengthErr;
+        this.setRaisedErrors(true);
     }
     
     

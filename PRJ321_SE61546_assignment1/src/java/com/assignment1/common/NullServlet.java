@@ -6,9 +6,14 @@
 
 package com.assignment1.common;
 
+import com.assignment1.account.AccountDAO;
+import com.assignment1.account.AccountDTO;
 import com.assignment1.account.AccountLoginError;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,8 +26,8 @@ import javax.servlet.http.HttpSession;
  * @author Hau
  */
 public class NullServlet extends HttpServlet {
-    private final String loginPage = "login.jsp";
-    private final String loginPageHtml = "login.html";
+    private final String loginPage = "views/login.jsp";
+    private final String searchPage = "views/search.jsp";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,22 +42,44 @@ public class NullServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             HttpSession session = request.getSession(false);
+            
+            String url = "Controller?btAction=LoginPage";
             if(session == null) {
                 AccountLoginError errorbj = (AccountLoginError) request.getAttribute("ERROROBJ");
-                String url = loginPageHtml;
+                
                 if(errorbj!=null) {
                     url = loginPage;
+                    RequestDispatcher rd = request.getRequestDispatcher(url);
+                    rd.forward(request, response);
                 }
                 
-                RequestDispatcher rd = request.getRequestDispatcher(url);
-                rd.forward(request, response);
+                response.sendRedirect(url);
                 return;
             }
             
-            String urlRewriting = "Controller?btAction=searchPage";
-            response.sendRedirect(urlRewriting);
-            
-            
+
+            AccountDTO loginUser = (AccountDTO) session.getAttribute("LOGGINUSR");
+
+            if(loginUser==null) {
+                response.sendRedirect(url);
+                return;
+            }
+
+            AccountDAO dao = new AccountDAO();
+            try {
+                if(dao.checkLogin(loginUser.getAccountID(), 
+                        loginUser.getPassword())==null) {
+                    response.sendRedirect(url);
+                    return;
+                }
+            } catch (ClassNotFoundException | SQLException ex) {
+                log(ex.getMessage());
+                response.sendError(500);
+                return; 
+            } 
+
+            RequestDispatcher rd = request.getRequestDispatcher(searchPage);
+            rd.forward(request, response);
         }
     }
 

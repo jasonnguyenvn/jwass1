@@ -4,6 +4,8 @@
     Author     : Hau
 --%>
 
+<%@page import="com.assignment1.account.AccountDTO"%>
+<%@page import="com.assignment1.account.AccountLoginError"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,6 +14,19 @@
         <title>Search Order</title>
     </head>
     <body>
+        <%
+
+        AccountDTO loginUser = (AccountDTO) session.getAttribute("LOGGINUSR");
+
+        if(loginUser!=null) {
+            %>
+            <font color="red">
+            Welcome, <%= loginUser.getAccountID() %>
+            </font>
+            <%
+        }
+        %>
+        
         <h1>Search Order</h1>
         
         <form action="ControllerServlet" method="POST">

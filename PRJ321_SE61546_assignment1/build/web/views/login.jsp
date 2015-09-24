@@ -4,7 +4,7 @@
     Author     : Hau
 --%>
 
-<%@page import="com.assignment1.account.accountError"%>
+<%@page import="com.assignment1.account.AccountLoginError"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <!--
@@ -22,15 +22,15 @@ and open the template in the editor.
         <h1>Login Page - occurs errors</h1>
         
         <%
-            accountError errorbj = (accountError) request.getAttribute("ERROROBJ");
+            AccountLoginError errorbj = (AccountLoginError) request.getAttribute("ERROROBJ");
             if(errorbj!=null) {
                 %>
                
                 <%
-                    if(errorbj.getInvalidUsernamePassword()!=null) {
+                    if(errorbj.getInvalidUsernamePasswordErr()!=null) {
                         %>
                         <h3> <font color="red">
-                            <%= errorbj.getInvalidUsernamePassword() %>
+                            <%= errorbj.getInvalidUsernamePasswordErr() %>
                         </font></h3>
                         <h4>
                             <a href="Controller?btAction=signUp">
@@ -41,10 +41,10 @@ and open the template in the editor.
                         <%
                     }
                     
-                    if(errorbj.getNullPointer()!=null) {
+                    if(errorbj.getNullPointerErr()!=null) {
                         %>
                         <h3> <font color="red">
-                            <%= errorbj.getNullPointer() %>
+                            <%= errorbj.getNullPointerErr() %>
                         </font></h3>
                         <h4>
                             <a href="Controller?btAction=signUp">
@@ -74,8 +74,8 @@ and open the template in the editor.
                         <font color="red">
                         <%
                             if(errorbj!=null) {
-                                if(errorbj.getNullUsername()!=null) {
-                                    out.print(errorbj.getNullUsername());
+                                if(errorbj.getNullUsernameErr()!=null) {
+                                    out.print(errorbj.getNullUsernameErr());
                                 }
                             }
                         %>
@@ -89,8 +89,8 @@ and open the template in the editor.
                         <font color="red">
                         <%
                             if(errorbj!=null) {
-                                if(errorbj.getNullPassword()!=null) {
-                                    out.print(errorbj.getNullPassword());
+                                if(errorbj.getNullPasswordErr()!=null) {
+                                    out.print(errorbj.getNullPasswordErr());
                                 }
                             }
                         %>
