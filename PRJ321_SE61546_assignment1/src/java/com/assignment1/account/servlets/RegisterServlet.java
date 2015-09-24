@@ -22,8 +22,8 @@ import javax.servlet.http.HttpServletResponse;
  * @author Hau
  */
 public class RegisterServlet extends HttpServlet {
-    private final String signUpPage = "signUp.jsp";
-    private final String loginPage = "login.html";
+    private final String signUpPage = "../views/signUp.jsp";
+    private final String loginPage = "../views/login.html";
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

@@ -12,8 +12,6 @@ import com.assignment1.account.AccountLoginError;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -45,13 +43,13 @@ public class NullServlet extends HttpServlet {
             
             String url = "Controller?btAction=LoginPage";
             if(session == null) {
-                AccountLoginError errorbj = (AccountLoginError) request.getAttribute("ERROROBJ");
+                /*AccountLoginError errorbj = (AccountLoginError) request.getAttribute("ERROROBJ");
                 
                 if(errorbj!=null) {
                     url = loginPage;
                     RequestDispatcher rd = request.getRequestDispatcher(url);
                     rd.forward(request, response);
-                }
+                }*/
                 
                 response.sendRedirect(url);
                 return;

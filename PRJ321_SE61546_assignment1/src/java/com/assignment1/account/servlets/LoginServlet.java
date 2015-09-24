@@ -26,7 +26,7 @@ import javax.servlet.http.HttpSession;
  * @author Hau
  */
 public class LoginServlet extends HttpServlet {
-    private final String loginPage = "login.jsp";
+    private final String loginPage = "../views/login.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

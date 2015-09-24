@@ -26,19 +26,19 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PreprocessServlet</servlet-name>
-        <url-pattern>/PreprocessServlet</url-pattern>
+        <url-pattern>/Controllers/PreprocessServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/LoginServlet</url-pattern>
+        <url-pattern>/Controllers/LoginServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>NullServlet</servlet-name>
-        <url-pattern>/NullServlet</url-pattern>
+        <url-pattern>/Controllers/NullServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
-        <url-pattern>/RegisterServlet</url-pattern>
+        <url-pattern>/Controllers/RegisterServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
@@ -63,8 +63,13 @@
     <security-constraint>
         <display-name>Constraint1</display-name>
         <web-resource-collection>
-            <web-resource-name>All</web-resource-name>
-            <description>All Resources</description>
+            <web-resource-name>Controller Security</web-resource-name>
+            <description/>
+            <url-pattern>/Controllers/*</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>Views Security</web-resource-name>
+            <description/>
             <url-pattern>/views/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>

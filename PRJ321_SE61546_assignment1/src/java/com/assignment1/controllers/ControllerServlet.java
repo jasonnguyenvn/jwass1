@@ -20,11 +20,12 @@ import javax.servlet.http.HttpServletResponse;
  * @author Hau
  */
 public class ControllerServlet extends HttpServlet {
-    private final String nullServlet = "NullServlet";
-    private final String loginServlet = "LoginServlet";
+    private final String nullServlet = "Controllers/NullServlet";
+    private final String loginServlet = "Controllers/LoginServlet";
     private final String searchPage = "views/search.jsp";
     private final String signUpPage = "views/signUp.html";
     private final String loginPage = "views/login.html";
+    private final String registerServlet = "Controllers/RegisterServlet";
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -58,6 +59,8 @@ public class ControllerServlet extends HttpServlet {
                 url = searchPage;
             } else if(button.equals("signUp")) {
                 url = signUpPage;
+            } else if(button.equals("Sign Up!")) {
+                url = registerServlet;
             } else {
                 response.sendError(404);
                 return;
