@@ -6,7 +6,7 @@
 
 package com.assignment1.common;
 
-import com.assignment1.account.accountError;
+import com.assignment1.account.AccountLoginError;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -38,7 +38,7 @@ public class NullServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             HttpSession session = request.getSession(false);
             if(session == null) {
-                accountError errorbj = (accountError) request.getAttribute("ERROROBJ");
+                AccountLoginError errorbj = (AccountLoginError) request.getAttribute("ERROROBJ");
                 String url = loginPageHtml;
                 if(errorbj!=null) {
                     url = loginPage;

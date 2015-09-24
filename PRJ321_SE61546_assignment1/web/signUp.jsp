@@ -21,7 +21,7 @@
                     <td width="80px">Username:</td>
                     <td width="200px">
                         <input style="width:200px;" type="text" name="accountID" value="" />
-                        (3 - 5 characters)
+                        (3 - 10 characters)
                     </td>
                 </tr>
                 <tr>

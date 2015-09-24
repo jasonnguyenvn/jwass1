@@ -13,16 +13,16 @@ import java.util.Objects;
  *
  * @author Hau
  */
-public class accountDTO implements Serializable {
+public class AccountDTO implements Serializable {
     private String accountID;
     private String customerName;
     private String password;
     private String email;
 
-    public accountDTO() {
+    public AccountDTO() {
     }
 
-    public accountDTO(String accountID, String customerName, String password, String email) {
+    public AccountDTO(String accountID, String customerName, String password, String email) {
         this.accountID = accountID;
         this.customerName = customerName;
         this.password = password;
@@ -76,7 +76,7 @@ public class accountDTO implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final accountDTO other = (accountDTO) obj;
+        final AccountDTO other = (AccountDTO) obj;
         return Objects.equals(this.accountID, other.accountID);
     }
 

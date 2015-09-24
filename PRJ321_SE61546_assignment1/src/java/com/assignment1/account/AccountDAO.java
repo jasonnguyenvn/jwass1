@@ -17,7 +17,7 @@ import java.sql.SQLException;
  *
  * @author Hau
  */
-public class accountDAO implements Serializable {
+public class AccountDAO implements Serializable {
     
     public boolean createAccount(String accountID, String customerName,
             String password, String email) 
@@ -52,9 +52,9 @@ public class accountDAO implements Serializable {
         return result;
     }
     
-    public accountDTO checkLogin(String accountID, String password) 
+    public AccountDTO checkLogin(String accountID, String password) 
             throws ClassNotFoundException, SQLException {
-        accountDTO result = null;
+        AccountDTO result = null;
         Connection con = MSSQLUtil.openConnection();
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -73,7 +73,7 @@ public class accountDAO implements Serializable {
                 String customerName = rs.getString("customerName");
                 String email = rs.getString("email");
                 
-                accountDTO acc = new accountDTO(accountID, customerName, 
+                AccountDTO acc = new AccountDTO(accountID, customerName, 
                         password, email);
                 result = acc;             
             }

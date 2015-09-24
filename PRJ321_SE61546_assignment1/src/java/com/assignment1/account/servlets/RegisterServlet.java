@@ -6,13 +6,11 @@
 
 package com.assignment1.account.servlets;
 
-import com.assignment1.account.accountDAO;
-import com.assignment1.account.accountError;
+import com.assignment1.account.AccountDAO;
+import com.assignment1.account.AccountInsertError;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -40,29 +38,38 @@ public class RegisterServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            accountError errorObj = new accountError();
+            AccountInsertError errorObj = new AccountInsertError();
             
-            
+            String accountID = "";
+            String customerName = "";
+            String password = "";
+            String txtConfirm = "";
             try {
-                String accountID = request.getParameter("accountID").trim();
-                String customerName = request.getParameter("customerName").trim();
-                String password = request.getParameter("password").trim();
-                String txtConfirm = request.getParameter("txtConfirm").trim();
-                
-                accountDAO dao = new accountDAO();
-                
-                boolean result = dao.createAccount(accountID, customerName,
-                                                            password, password);
-                
-                
+                accountID = request.getParameter("accountID").trim();
+                customerName = request.getParameter("customerName").trim();
+                password = request.getParameter("password").trim();
+                txtConfirm = request.getParameter("txtConfirm").trim();
                 
             } catch (NullPointerException ex) {
                 log("Someone send bad request: " + ex.getMessage());
-                errorObj.setNullPointer("BAD REQUEST");
+                errorObj.setNullPointerErr("BAD REQUEST");
+            } 
+            
+            
+            if(accountID.length()<3 || accountID.length()>10) {
+            }
+            
+            
+            try {
+                AccountDAO dao = new AccountDAO();
+                boolean result = dao.createAccount(accountID, customerName,
+                                                            password, password);
             } catch (ClassNotFoundException ex) {
                 log(ex.getMessage());
+                response.sendError(500);
             } catch (SQLException ex) {
-                Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);
+                log(ex.getMessage());
+                errorObj.setUsernameEmailExisted("Username or Email existed.");
             }
             
             

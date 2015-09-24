@@ -6,9 +6,9 @@
 
 package com.assignment1.account.servlets;
 
-import com.assignment1.account.accountDAO;
-import com.assignment1.account.accountDTO;
-import com.assignment1.account.accountError;
+import com.assignment1.account.AccountDAO;
+import com.assignment1.account.AccountDTO;
+import com.assignment1.account.AccountLoginError;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -41,22 +41,22 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            accountError erroObj = new accountError();
-            accountDAO dao = new accountDAO();
+            AccountLoginError erroObj = new AccountLoginError();
+            AccountDAO dao = new AccountDAO();
             String accountID = request.getParameter("accountID");
             String password = request.getParameter("password");
             
             try {
                 if (accountID.equals("")) {
-                    erroObj.setNullUsername("Username cannot be null.");
+                    erroObj.setNullUsernameErr("Username cannot be null.");
                 }
 
                 if (password.equals("")) {
-                    erroObj.setNullPassword("Password cannot be null.");
+                    erroObj.setNullPasswordErr("Password cannot be null.");
                 }
             } catch (NullPointerException ex) {
                 log("Someone send bad request: " + ex.getMessage());
-                erroObj.setNullPointer("BAD REQUEST");
+                erroObj.setNullPointerErr("BAD REQUEST");
             } 
             
             if(erroObj.isRaisedErrors()) {
@@ -66,7 +66,7 @@ public class LoginServlet extends HttpServlet {
                 return;
             }
             
-            accountDTO dto = null;
+            AccountDTO dto = null;
             try {
                 dto = dao.checkLogin(accountID, password);
                 
@@ -88,7 +88,7 @@ public class LoginServlet extends HttpServlet {
             }
             
             
-            erroObj.setInvalidUsernamePassword("INVALID USERNAME OR PASSWORD.");
+            erroObj.setInvalidUsernamePasswordErr("INVALID USERNAME OR PASSWORD.");
             
             request.setAttribute("ERROROBJ", erroObj);
             RequestDispatcher dr = request.getRequestDispatcher(loginPage);
