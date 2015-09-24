@@ -6,28 +6,23 @@
 
 package com.assignment1.account.servlets;
 
-import com.assignment1.account.accountDAO;
-import com.assignment1.account.accountDTO;
 import com.assignment1.account.accountError;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Hau
  */
-public class LoginServlet extends HttpServlet {
-    private final String loginPage = "login.jsp";
-
+public class RegisterServlet extends HttpServlet {
+    private final String signUpPage = "signUp.jsp";
+    private final String loginPage = "login.html";
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,54 +36,31 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            accountError erroObj = new accountError();
-            accountDAO dao = new accountDAO();
-            String accountID = request.getParameter("accountID");
-            String password = request.getParameter("password");
+            accountError errorObj = new accountError();
+            
             
             try {
-                if (accountID.equals("")) {
-                    erroObj.setNullUsername("Username cannot be null.");
-                }
-
-                if (password.equals("")) {
-                    erroObj.setNullPassword("Password cannot be null.");
-                }
+                String accountID = request.getParameter("accountID").trim();
+                String customerName = request.getParameter("customerName").trim();
+                String password = request.getParameter("password").trim();
+                String txtConfirm = request.getParameter("txtConfirm").trim();
+                
+                
+                
+                
             } catch (NullPointerException ex) {
                 log("Someone send bad request: " + ex.getMessage());
-                erroObj.setNullPointer("BAD REQUEST");
-            } 
-            
-            if(erroObj.isRaisedErrors()) {
-                request.setAttribute("ERROROBJ", erroObj);
-                RequestDispatcher dr = request.getRequestDispatcher(loginPage);
-                dr.forward(request, response);
-                return;
-            }
-            
-            accountDTO dto = null;
-            try {
-                dto = dao.checkLogin(accountID, password);
-                
-            } catch (    ClassNotFoundException | SQLException ex) {
-                log(ex.getMessage());
-            }
-            
-            if (dto!=null) {
-                HttpSession session = request.getSession();
-                session.setAttribute("LOGGINUSR", dto);
-                
-                String urlRewriting = "Controller?btAction=searchPage";
-                response.sendRedirect(urlRewriting);
-                return;
+                errorObj.setNullPointer("BAD REQUEST");
             }
             
             
-            erroObj.setInvalidUsernamePassword("INVALID USERNAME OR PASSWORD.");
-            
-            request.setAttribute("ERROROBJ", erroObj);
-            RequestDispatcher dr = request.getRequestDispatcher(loginPage);
-            dr.forward(request, response);
+            String url = loginPage;
+            if(errorObj.isRaisedErrors()) {
+                url = signUpPage;
+            }
+
+            RequestDispatcher rd = request.getRequestDispatcher(url);
+            rd.forward(request, response);
         }
     }
 

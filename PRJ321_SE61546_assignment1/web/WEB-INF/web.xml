@@ -16,6 +16,10 @@
         <servlet-name>NullServlet</servlet-name>
         <servlet-class>com.assignment1.common.NullServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RegisterServlet</servlet-name>
+        <servlet-class>com.assignment1.account.servlets.RegisterServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ControllerServlet</servlet-name>
         <url-pattern>/Controller</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>NullServlet</servlet-name>
         <url-pattern>/NullServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegisterServlet</servlet-name>
+        <url-pattern>/RegisterServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

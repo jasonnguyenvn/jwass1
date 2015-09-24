@@ -6,6 +6,7 @@
 
 package com.assignment1.common;
 
+import com.assignment1.account.accountError;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -21,7 +22,7 @@ import javax.servlet.http.HttpSession;
  */
 public class NullServlet extends HttpServlet {
     private final String loginPage = "login.jsp";
-
+    private final String loginPageHtml = "login.html";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,10 +38,19 @@ public class NullServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             HttpSession session = request.getSession(false);
             if(session == null) {
-                RequestDispatcher rd = request.getRequestDispatcher(loginPage);
+                accountError errorbj = (accountError) request.getAttribute("ERROROBJ");
+                String url = loginPageHtml;
+                if(errorbj!=null) {
+                    url = loginPage;
+                }
+                
+                RequestDispatcher rd = request.getRequestDispatcher(url);
                 rd.forward(request, response);
                 return;
             }
+            
+            String urlRewriting = "Controller?btAction=searchPage";
+            response.sendRedirect(urlRewriting);
             
             
         }

@@ -16,6 +16,7 @@ public class accountError {
     private String invalidUsernamePassword;
     private String nullUsername;
     private String nullPassword;
+    private String nullPointer;
 
     public boolean isRaisedErrors() {
         return raisedErrors;
@@ -51,6 +52,15 @@ public class accountError {
 
     public void setNullPassword(String nullPassword) {
         this.nullPassword = nullPassword;
+        this.setRaisedErrors(true);
+    }
+
+    public String getNullPointer() {
+        return nullPointer;
+    }
+
+    public void setNullPointer(String nullPointer) {
+        this.nullPointer = nullPointer;
         this.setRaisedErrors(true);
     }
     

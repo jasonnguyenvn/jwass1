@@ -19,6 +19,39 @@ import java.sql.SQLException;
  */
 public class accountDAO implements Serializable {
     
+    public boolean createAccount(String accountID, String customerName,
+            String password, String email) 
+            throws ClassNotFoundException, SQLException {
+        boolean result = false;
+        Connection con = MSSQLUtil.openConnection();
+        PreparedStatement stm = null;
+        
+        String sql = "INSERT INTO tbl_account(accountID, customerName, password,"
+                        + " email) VALUES(?, ?, ?, ?) ";
+        
+        try {
+            stm = con.prepareCall(sql);
+            stm.setString(1, accountID);
+            stm.setString(2, customerName);
+            stm.setString(3, password);
+            stm.setString(4, email);
+            
+            int rs = stm.executeUpdate();
+            if (rs > 0) {
+                result = true;
+            }
+            
+        } finally {
+            if (stm!=null) {
+                stm.close();
+            }
+            
+            con.close();
+        }
+        
+        return result;
+    }
+    
     public accountDTO checkLogin(String accountID, String password) 
             throws ClassNotFoundException, SQLException {
         accountDTO result = null;
@@ -42,7 +75,7 @@ public class accountDAO implements Serializable {
                 
                 accountDTO acc = new accountDTO(accountID, customerName, 
                         password, email);
-                return acc;                
+                result = acc;             
             }
             
         } finally {

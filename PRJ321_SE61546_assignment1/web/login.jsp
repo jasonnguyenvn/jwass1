@@ -14,12 +14,12 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>Login Page</title>
+        <title>Login Page - occurs errors</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
     </head>
     <body>
-        <h1>Login Page</h1>
+        <h1>Login Page - occurs errors</h1>
         
         <%
             accountError errorbj = (accountError) request.getAttribute("ERROROBJ");
@@ -32,6 +32,26 @@ and open the template in the editor.
                         <h3> <font color="red">
                             <%= errorbj.getInvalidUsernamePassword() %>
                         </font></h3>
+                        <h4>
+                            <a href="Controller?btAction=signUp">
+                                Click here to Sign up a new account</a>
+                            <br/>
+                            or Try again:
+                        </h4>
+                        <%
+                    }
+                    
+                    if(errorbj.getNullPointer()!=null) {
+                        %>
+                        <h3> <font color="red">
+                            <%= errorbj.getNullPointer() %>
+                        </font></h3>
+                        <h4>
+                            <a href="Controller?btAction=signUp">
+                                Click here to Sign up a new account</a>
+                            <br/>
+                            or Try again:
+                        </h4>
                         <%
                     }
                 %>
