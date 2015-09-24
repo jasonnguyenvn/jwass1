@@ -60,7 +60,7 @@ public class ControllerServlet extends HttpServlet {
                 response.sendError(500);
             }
             
-            String url = "";
+            String url;
             if(button.equals("Login")) {
                 url = loginServlet;
             } else if(button.equals("LoginPage")) {
