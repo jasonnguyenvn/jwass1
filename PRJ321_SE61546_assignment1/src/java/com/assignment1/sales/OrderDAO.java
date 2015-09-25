@@ -18,8 +18,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -38,7 +36,8 @@ public class OrderDAO implements Serializable {
         
     }
     
-    public List<OrderDTO> searchOrdersByDate(Date fromDate, Date toDate) 
+    public List<OrderDTO> searchOrdersByDate(Date fromDate, Date toDate, 
+            AccountDTO loginAcc) 
             throws ClassNotFoundException, SQLException, NullPointerException {
         
         List<OrderDTO> result = new ArrayList<>();
@@ -47,34 +46,25 @@ public class OrderDAO implements Serializable {
         PreparedStatement stm = null;
         ResultSet rs = null;
         
-        String sql = "SELECT * FROM tbl_order WHERE orderDate >= ? "
-                + " AND orderDate <= ? ";
+        String sql = "SELECT * FROM tbl_order WHERE customerID=? AND"
+                    + " orderDate >= ? AND orderDate <= ? ";
         
         try {
             stm = con.prepareCall(sql);
-            stm.setDate(1,  fromDate);
-            stm.setDate(2,  toDate);
+            stm.setString(1, loginAcc.getAccountID());
+            stm.setDate(2,  fromDate);
+            stm.setDate(3,  toDate);
             
             rs = stm.executeQuery();
             
             while(rs.next()) {
                 String orderID = rs.getString("orderID");
                 Date orderDate = rs.getDate("orderDate");
-                String customerID = rs.getString("customerID");
                 float total = rs.getFloat("total");
                 String address = rs.getString("address");
                 String phone = rs.getString("phone");
                 
-                AccountDTO customer = this.getCustomer(customerID);
-                
-                if(customer == null) {
-                    CustomerNotFoundException ex = new CustomerNotFoundException();
-                    Logger.getLogger(SearchOrderServlet.class.getName())
-                            .log(Level.SEVERE, null, ex);
-                    continue;
-                }
-                
-                OrderDTO dto = new OrderDTO(orderID, orderDate, customer, 
+                OrderDTO dto = new OrderDTO(orderID, orderDate, loginAcc, 
                                     total, address, phone);
                 this.getDetails(orderID, dto.getItems());
                 

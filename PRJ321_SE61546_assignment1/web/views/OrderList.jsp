@@ -14,20 +14,23 @@ if(fromDate==null || toDate==null) {
 }
 
 if(orderList!=null) {  
+    %>
+    <h1>Order List</h1>
+
+    <div id="date" style="width:100%">
+        <div  id="from" style="float:left;margin-right:5px">
+            From: <%= fromDate %>
+        </div>
+        <div style="float:left;" id="to">
+            To: <%= toDate %>
+        </div>
+    </div>
+    <br />
+    <h4>Result:</h4>
+    <%
     if(orderList.size()>0) {
 %>
-        <h1>Order List</h1>
-
-        <div id="date" style="width:100%">
-            <div  id="from" style="float:left;margin-right:5px">
-                From: <%= fromDate %>
-            </div>
-            <div style="float:left;" id="to">
-                To: <%= toDate %>
-            </div>
-        </div>
-        <br />
-        <h4>Result:</h4>
+        
 
         <table border="1">
             <thead>

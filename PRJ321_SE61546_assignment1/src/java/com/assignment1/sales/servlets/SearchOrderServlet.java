@@ -6,6 +6,7 @@
 
 package com.assignment1.sales.servlets;
 
+import com.assignment1.account.AccountDTO;
 import com.assignment1.sales.OrderDAO;
 import com.assignment1.sales.OrderDTO;
 import com.assignment1.sales.OrderSearchError;
@@ -21,6 +22,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -74,7 +76,10 @@ public class SearchOrderServlet extends HttpServlet {
             OrderDAO dao = new OrderDAO();
             List<OrderDTO> orderList;
             try {
-                orderList = dao.searchOrdersByDate(fromDate, toDate);
+                HttpSession session = request.getSession(false);
+                AccountDTO loginUser = (AccountDTO) session.getAttribute("LOGGINUSR");
+                
+                orderList = dao.searchOrdersByDate(fromDate, toDate, loginUser);
                 request.setAttribute("ORDERLIST", orderList);
                 RequestDispatcher dr = request.getRequestDispatcher(searchPage);
                 dr.forward(request, response);
