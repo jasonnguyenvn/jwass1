@@ -6,6 +6,7 @@
 
 package com.assignment1.sales;
 
+import com.assignment1.account.AccountDTO;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.sql.Date;
@@ -19,7 +20,7 @@ import java.util.Objects;
 public class OrderDTO implements Serializable {
     private String orderID;
     private Date orderDate;
-    private String customerID;
+    private AccountDTO customer;
     private float total;
     private String address;
     private String phone;
@@ -30,17 +31,32 @@ public class OrderDTO implements Serializable {
         items = new ArrayList<>();
     }
 
-    public OrderDTO(String orderID, Date orderDate, String customerID, 
+    public OrderDTO(String orderID, Date orderDate, AccountDTO customer, 
             float total, String address, String phone) {
-        items = new ArrayList<>();
-        
         this.orderID = orderID;
         this.orderDate = orderDate;
-        this.customerID = customerID;
+        this.customer = customer;
         this.total = total;
         this.address = address;
         this.phone = phone;
+        
+        items = new ArrayList<>();
     }
+
+    public OrderDTO(String orderID, Date orderDate, AccountDTO customer, 
+            float total, String address, String phone, List<OrderDetailDTO> items) {
+        this.orderID = orderID;
+        this.orderDate = orderDate;
+        this.customer = customer;
+        this.total = total;
+        this.address = address;
+        this.phone = phone;
+        this.items = items;
+    }
+    
+    
+
+    
 
     public String getOrderID() {
         return orderID;
@@ -58,12 +74,12 @@ public class OrderDTO implements Serializable {
         this.orderDate = orderDate;
     }
 
-    public String getCustomerID() {
-        return customerID;
+    public AccountDTO getCustomer() {
+        return customer;
     }
 
-    public void setCustomerID(String customerID) {
-        this.customerID = customerID;
+    public void setCustomer(AccountDTO customer) {
+        this.customer = customer;
     }
 
     public float getTotal() {

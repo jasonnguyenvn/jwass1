@@ -91,4 +91,43 @@ public class AccountDAO implements Serializable {
         
         return result;
     }
+    
+    public AccountDTO getAccountById(String accountID) 
+            throws ClassNotFoundException, SQLException {
+        AccountDTO result = null;
+        Connection con = MSSQLUtil.openConnection();
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        
+        String sql = "SELECT * FROM tbl_account WHERE accountID=? ";
+        
+        try {
+            stm = con.prepareCall(sql);
+            stm.setString(1, accountID);
+            
+            rs = stm.executeQuery();
+            
+            if(rs.next()) {
+                String customerName = rs.getString("customerName");
+                String email = rs.getString("email");
+                String password = rs.getString("password");
+                
+                AccountDTO acc = new AccountDTO(accountID, customerName, 
+                        password, email);
+                result = acc;             
+            }
+            
+        } finally {
+            if (rs!=null) {
+                rs.close();
+            }
+            if (stm!=null) {
+                stm.close();
+            }
+            
+            con.close();
+        }
+        
+        return result;
+    }
 }

@@ -27,6 +27,7 @@ public class ControllerServlet extends HttpServlet {
     private final String signUpPage = "views/signUp.html";
     private final String loginPage = "views/login.html";
     private final String registerServlet = "Actions/RegisterServlet";
+    private final String searchOrderServlet = "Actions/SearchOrderServlet";
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -85,6 +86,8 @@ public class ControllerServlet extends HttpServlet {
                 url = signUpPage;
             } else if(button.equals("Sign Up!")) {
                 url = registerServlet;
+            }  else if(button.equals("Search")) {
+                url = searchOrderServlet;
             } else {
                 response.sendError(404);
                 return;

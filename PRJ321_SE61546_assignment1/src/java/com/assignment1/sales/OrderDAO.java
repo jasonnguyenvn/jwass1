@@ -7,6 +7,9 @@
 package com.assignment1.sales;
 
 import com.assignment1.DBUtils.MSSQLUtil;
+import com.assignment1.account.AccountDAO;
+import com.assignment1.account.AccountDTO;
+import com.assignment1.sales.servlets.SearchOrderServlet;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,6 +18,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -22,8 +27,20 @@ import java.util.List;
  */
 public class OrderDAO implements Serializable {
     
+    public class CustomerNotFoundException extends Exception {
+        public CustomerNotFoundException() {
+            super("COULD NOT FIND CUSTOMER IN THE DATABASE FOR THIS ORDER");
+        }
+        
+        public CustomerNotFoundException(String reason) {
+            super(reason);
+        }
+        
+    }
+    
     public List<OrderDTO> searchOrdersByDate(Date fromDate, Date toDate) 
-            throws ClassNotFoundException, SQLException,  NullPointerException {
+            throws ClassNotFoundException, SQLException, NullPointerException {
+        
         List<OrderDTO> result = new ArrayList<>();
         
         Connection con = MSSQLUtil.openConnection();
@@ -48,8 +65,17 @@ public class OrderDAO implements Serializable {
                 String address = rs.getString("address");
                 String phone = rs.getString("phone");
                 
-                OrderDTO dto = new OrderDTO(orderID, orderDate, customerID, 
-                                            total, address, phone);
+                AccountDTO customer = this.getCustomer(customerID);
+                
+                if(customer == null) {
+                    CustomerNotFoundException ex = new CustomerNotFoundException();
+                    Logger.getLogger(SearchOrderServlet.class.getName())
+                            .log(Level.SEVERE, null, ex);
+                    continue;
+                }
+                
+                OrderDTO dto = new OrderDTO(orderID, orderDate, customer, 
+                                    total, address, phone);
                 this.getDetails(orderID, dto.getItems());
                 
                 result.add(dto);
@@ -65,6 +91,17 @@ public class OrderDAO implements Serializable {
             
             con.close();
         }
+        
+        return result;
+    }
+    
+    protected AccountDTO getCustomer(String customerID) 
+            throws ClassNotFoundException, SQLException {
+        AccountDTO result;
+        
+        AccountDAO dao = new AccountDAO();
+        
+        result = dao.getAccountById(customerID);
         
         return result;
     }

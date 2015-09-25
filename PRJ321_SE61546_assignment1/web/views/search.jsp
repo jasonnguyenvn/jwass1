@@ -23,6 +23,8 @@
         
         <%
             OrderSearchError errorObj = (OrderSearchError) request.getAttribute("SEARCHERROBJ");
+            String txtFromDate = request.getParameter("txtFromDate");
+            String txtToDate = request.getParameter("txtToDate");
         %>
         
         
@@ -32,7 +34,11 @@
                     <td width="80px">From Date:</td>
                     <td width="200px">
                         <input style="width:200px;" type="text" 
-                               name="txtFromDate" value="" />
+                               name="txtFromDate" value="<%
+                               if(txtFromDate!=null) {
+                                   out.print(txtFromDate);
+                               }
+                               %>" />
                         <%
                         if(errorObj!=null) {
                             if(errorObj.getInvalidFromDateFormatErr()!=null) {
@@ -50,7 +56,11 @@
                     <td width="80px">To Date:</td>
                     <td width="200px">
                         <input style="width:200px;" type="text" 
-                               name="txtToDate" value="" />
+                               name="txtToDate" value="<% 
+                               if(txtToDate!=null) {
+                                   out.print(txtToDate);
+                               }
+                               %>" />
                         <%
                         if(errorObj!=null) {
                             if(errorObj.getInvalidToDateFormatErr()!=null) {
@@ -75,15 +85,8 @@
             </table>
         </form>
         
-        <%
-        List<OrderDTO> orderList = (List<OrderDTO>) request.getAttribute("ORDERLIST");
-        String listPage = "OrderList.jsp";
         
-        if(orderList!=null) {
-            RequestDispatcher dr = request.getRequestDispatcher(listPage);
-            dr.forward(request, response);
-        }
         
-        %>
+        <%@include file="OrderList.jsp" %>
     </body>
 </html>

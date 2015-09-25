@@ -22,7 +22,8 @@ public class AccountDTO implements Serializable {
     public AccountDTO() {
     }
 
-    public AccountDTO(String accountID, String customerName, String password, String email) {
+    public AccountDTO(String accountID, String customerName, String password, 
+            String email) {
         this.accountID = accountID;
         this.customerName = customerName;
         this.password = password;
@@ -82,7 +83,7 @@ public class AccountDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "accountDTO{" + "accountID=" + accountID + '}';
+        return accountID ;
     }
     
 }

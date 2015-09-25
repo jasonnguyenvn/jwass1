@@ -53,7 +53,7 @@ public class SearchOrderServlet extends HttpServlet {
             } catch (IllegalArgumentException ex) {
                 log("User input invalid date format to search orders: " 
                         + ex.getMessage());
-                errorObj.setInvalidFromDateFormatErr("Invalid F");
+                errorObj.setInvalidFromDateFormatErr("Invalid From Date format");
             }
             
             try {
@@ -61,7 +61,7 @@ public class SearchOrderServlet extends HttpServlet {
             } catch (IllegalArgumentException ex) {
                 log("User input invalid date format to search orders: " 
                         + ex.getMessage());
-                errorObj.setInvalidToDateFormatErr("Invalid F");
+                errorObj.setInvalidToDateFormatErr("Invalid To Date format");
             }
             
             if(errorObj.isRaisedErrors()) {
@@ -72,10 +72,10 @@ public class SearchOrderServlet extends HttpServlet {
             }
             
             OrderDAO dao = new OrderDAO();
-            List<OrderDTO> dto;
+            List<OrderDTO> orderList;
             try {
-                dto = dao.searchOrdersByDate(fromDate, toDate);
-                request.setAttribute("ORDERLIST", dto);
+                orderList = dao.searchOrdersByDate(fromDate, toDate);
+                request.setAttribute("ORDERLIST", orderList);
                 RequestDispatcher dr = request.getRequestDispatcher(searchPage);
                 dr.forward(request, response);
                 
@@ -85,7 +85,8 @@ public class SearchOrderServlet extends HttpServlet {
             }  catch (NullPointerException ex) {
                 log(ex.getMessage());
                 response.sendError(500);
-            }
+            } 
+            
             
             
         }
