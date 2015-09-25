@@ -12,7 +12,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,7 +21,37 @@ import java.util.List;
 public class OrderDetailDAO implements Serializable {
     
     
-    public List<OrderDetailDTO> getOrderDetailByOrderId(String orderID, 
+    public boolean deleteOrderDetailsByOrderId(String orderID, Connection con) 
+            throws   SQLException {
+        boolean result = false;
+        
+        PreparedStatement stm = null;
+        
+        String sql = "DELETE FROM tbl_orderDetail WHERE orderID=? ";
+        
+        try {
+            stm = con.prepareCall(sql);
+            stm.setString(1, orderID);
+            
+            int rs = stm.executeUpdate();
+            
+            if(rs > 0) {
+                result = true;
+            }
+        } finally {
+            if (stm!=null) {
+                stm.close();
+            }
+            
+            con.close();
+        }
+        
+        
+        return result;
+    }
+    
+    
+    public List<OrderDetailDTO> getOrderDetailsByOrderId(String orderID, 
             List<OrderDetailDTO> itemList) 
             throws ClassNotFoundException, SQLException, NullPointerException {
         

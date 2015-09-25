@@ -7,9 +7,7 @@
 package com.assignment1.sales;
 
 import com.assignment1.DBUtils.MSSQLUtil;
-import com.assignment1.account.AccountDAO;
 import com.assignment1.account.AccountDTO;
-import com.assignment1.sales.servlets.SearchOrderServlet;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -35,6 +33,67 @@ public class OrderDAO implements Serializable {
 //        }
 //        
 //    }
+    
+    
+    protected boolean deleteOrderDetails(String orderID, Connection con) 
+            throws SQLException {
+        boolean result;
+        
+        OrderDetailDAO dao = new OrderDetailDAO();
+        
+        result = dao.deleteOrderDetailsByOrderId(orderID, con);
+        
+        return result;
+    }
+    
+    public final int DELETE_SUCCESSFULLY_NO_DETAILS_DELLETED = 1;
+    public final int DELETE_SUCCESSFULLY_DETAILS_DELLETED = 2;
+    public final int DELETE_UNSUCCESSFULLY_ROLLBACK = 0;
+    
+    public int deleteOrderByOrderId(String orderID) 
+            throws ClassNotFoundException, SQLException {
+        int result = DELETE_UNSUCCESSFULLY_ROLLBACK;
+        
+        Connection con = MSSQLUtil.openConnection();
+        PreparedStatement stm = null;
+        
+        String sql = "DELETE FROM tbl_order WHERE orderID=? ";
+        
+        boolean delDetailsResult = this.deleteOrderDetails(orderID, con);
+
+        try {
+            stm = con.prepareCall(sql);
+            stm.setString(1, orderID);
+
+            int rs = stm.executeUpdate();
+
+            if(rs > 0) {
+                if(delDetailsResult == true) {
+                    result = DELETE_SUCCESSFULLY_DETAILS_DELLETED;
+                } else {
+                    result = DELETE_SUCCESSFULLY_NO_DETAILS_DELLETED;
+                }
+                
+                con.commit();
+            } else {
+                con.rollback();
+            }
+        } catch (SQLException ex) {
+            con.rollback();
+            con.close();
+            throw new SQLException("DATABASE ERROR - ROLLBACK !!! " + ex);
+        } finally {
+            if (stm!=null) {
+                stm.close();
+            }
+            con.setAutoCommit(true);
+            con.close();
+            
+        }
+        
+        
+        return result;
+    }
     
     public List<OrderDTO> searchOrdersByDateNotLoadItems(Date fromDate, 
             Date toDate, AccountDTO loginAcc) 
@@ -151,7 +210,7 @@ public class OrderDAO implements Serializable {
         
         OrderDetailDAO dao = new OrderDetailDAO();
         
-        result = dao.getOrderDetailByOrderId(orderID, itemList);
+        result = dao.getOrderDetailsByOrderId(orderID, itemList);
         
         return result;
     }
