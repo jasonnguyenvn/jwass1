@@ -15,8 +15,6 @@ import java.io.PrintWriter;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -66,6 +64,12 @@ public class SearchOrderServlet extends HttpServlet {
                 errorObj.setInvalidToDateFormatErr("Invalid To Date format");
             }
             
+            if(toDate.compareTo(fromDate)<0) {
+                log("Usere has entered to date ealier than from date!");
+                errorObj.setToDateEalierThanFromDateErr("You cannot input TO "
+                        + "DATE ealier than FROM DATE!");
+            }
+            
             if(errorObj.isRaisedErrors()) {
                 request.setAttribute("SEARCHERROBJ", errorObj);
                 RequestDispatcher dr = request.getRequestDispatcher(searchPage);
@@ -76,10 +80,17 @@ public class SearchOrderServlet extends HttpServlet {
             OrderDAO dao = new OrderDAO();
             List<OrderDTO> orderList;
             try {
-                HttpSession session = request.getSession(false);
-                AccountDTO loginUser = (AccountDTO) session.getAttribute("LOGGINUSR");
+                HttpSession session ;
+                AccountDTO loginUser = null;
+                try {
+                    session = request.getSession(false);
+                    loginUser = (AccountDTO) session.getAttribute("LOGGINUSR");
+                } catch (NullPointerException ex) {
+                    log("Session time out or occurs error! " + ex.getMessage());
+                    response.sendRedirect("Controller");
+                }
                 
-                orderList = dao.searchOrdersByDate(fromDate, toDate, loginUser);
+                orderList = dao.searchOrdersByDateNotLoadItems(fromDate, toDate, loginUser);
                 request.setAttribute("ORDERLIST", orderList);
                 RequestDispatcher dr = request.getRequestDispatcher(searchPage);
                 dr.forward(request, response);
@@ -88,9 +99,9 @@ public class SearchOrderServlet extends HttpServlet {
                 log("SQL DB RAISED ERROR: " + ex.getMessage());
                 response.sendError(500);
             }  catch (NullPointerException ex) {
-                log(ex.getMessage());
+                log( ex.getMessage());
                 response.sendError(500);
-            } 
+            }
             
             
             

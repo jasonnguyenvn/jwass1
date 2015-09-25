@@ -25,6 +25,7 @@ public class OrderSearchError implements Serializable {
     
     String invalidFromDateFormatErr;
     String invalidToDateFormatErr;
+    String toDateEalierThanFromDateErr;
 
     public String getInvalidFromDateFormatErr() {
         return invalidFromDateFormatErr;
@@ -41,6 +42,15 @@ public class OrderSearchError implements Serializable {
 
     public void setInvalidToDateFormatErr(String invalidToDateFormatErr) {
         this.invalidToDateFormatErr = invalidToDateFormatErr;
+        this.setRaisedErrors(true);
+    }
+
+    public String getToDateEalierThanFromDateErr() {
+        return toDateEalierThanFromDateErr;
+    }
+
+    public void setToDateEalierThanFromDateErr(String toDateEalierThanFromDateErr) {
+        this.toDateEalierThanFromDateErr = toDateEalierThanFromDateErr;
         this.setRaisedErrors(true);
     }
     

@@ -4,6 +4,8 @@
     Author     : Hau
 --%>
 
+<%@page import="com.assignment1.sales.OrderDetailDTO"%>
+<%@page import="com.assignment1.sales.OrderDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,24 +14,49 @@
         <title>Order Details</title>
     </head>
     <body>
+        <%
+            OrderDTO dto = (OrderDTO) request.getAttribute("DTO");
+            if (dto == null) {
+                response.sendError(404);
+                return;
+            }
+        %>
+        
         <h1>Order Details</h1>
-        <div class="info_row">
-            <div  class="left" style="width:50%;margin-right:5px">
-                Order ID
-            </div>
-            <div style="width:50%;" class="right">
-                Date
-            </div>
-        </div>
-        <br/>
-        <div id="date">
-            <div  id="from" style="width:50%;margin-right:5px">
-                Customer
-            </div>
-            <div style="width:50%;" id="to">
-                Phone
-            </div>
-        </div>
+        
+        <table  >
+            <tr>
+                <td>Order ID</td>
+                <td>
+                    <%= dto.getOrderID() %>
+                </td>
+                
+                <td>Date</td>
+                <td>
+                    <%= dto.getOrderDate().toString() %>
+                </td>
+            </tr>
+            <tr>
+                <td>Customer</td>
+                <td>
+                    <%= dto.getCustomer().getCustomerName() %>
+                </td>
+                
+                <td>Phone</td>
+                <td>
+                    <%= dto.getPhone() %>
+                </td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td colspan="3">
+                    <%= dto.getAddress() %>
+                </td>
+            </tr>
+        </table>
+
+        
+        
         <h4>Detail</h4>
         <table border="1">
             <thead>
@@ -45,18 +72,52 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                <%
+                    int count = 1;
+                    for(OrderDetailDTO item : dto.getItems()) {
+                        %>
+                        <tr>
+                            <td>
+                                <%= count++ %>
+                            .</td>
+                            <td>
+                                <%= item.getProduct().getProductName() %>
+                            </td>
+                            <td>
+                                <%= item.getUnitItem() %>
+                            </td>
+                            <td>
+                                <%= item.getQuantity() %>
+                            </td>
+                            <td>
+                                <%= item.getUnitPrice() %>
+                            </td>
+                            <td>
+                                <%= item.getTotal() %>
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <%
+                    }
+                
+                %>
+                
+                
             </tbody>
         </table>
+
+        <%
+            String fromDate = request.getParameter("txtFromDate");
+            String toDate = request.getParameter("txtToDate");
+            String urlRewriting = "Controller?btAction=Search"
+                    + "&txtFromDate=" + fromDate
+                    + "&txtToDate=" + toDate;
+        %>
+        
+        <h4>Total: <%= dto.getTotal() %></h4>
+        
+        <h3><a href="<%= urlRewriting %>">Click here to return search page</a></h3>
 
         <!--
             REMEMBER TO ADD LINK HERE

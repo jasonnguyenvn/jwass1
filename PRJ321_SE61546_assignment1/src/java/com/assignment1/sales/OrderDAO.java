@@ -25,19 +25,19 @@ import java.util.List;
  */
 public class OrderDAO implements Serializable {
     
-    public class CustomerNotFoundException extends Exception {
-        public CustomerNotFoundException() {
-            super("COULD NOT FIND CUSTOMER IN THE DATABASE FOR THIS ORDER");
-        }
-        
-        public CustomerNotFoundException(String reason) {
-            super(reason);
-        }
-        
-    }
+//    public class CustomerNotFoundException extends Exception {
+//        public CustomerNotFoundException() {
+//            super("COULD NOT FIND CUSTOMER IN THE DATABASE FOR THIS ORDER");
+//        }
+//        
+//        public CustomerNotFoundException(String reason) {
+//            super(reason);
+//        }
+//        
+//    }
     
-    public List<OrderDTO> searchOrdersByDate(Date fromDate, Date toDate, 
-            AccountDTO loginAcc) 
+    public List<OrderDTO> searchOrdersByDateNotLoadItems(Date fromDate, 
+            Date toDate, AccountDTO loginAcc) 
             throws ClassNotFoundException, SQLException, NullPointerException {
         
         List<OrderDTO> result = new ArrayList<>();
@@ -66,7 +66,8 @@ public class OrderDAO implements Serializable {
                 
                 OrderDTO dto = new OrderDTO(orderID, orderDate, loginAcc, 
                                     total, address, phone);
-                this.getDetails(orderID, dto.getItems());
+                
+                // this.getDetails(orderID, dto.getItems());
                 
                 result.add(dto);
             }
@@ -85,16 +86,63 @@ public class OrderDAO implements Serializable {
         return result;
     }
     
-    protected AccountDTO getCustomer(String customerID) 
+    
+    public OrderDTO getOrderByID(String orderID, AccountDTO loginAcc) 
             throws ClassNotFoundException, SQLException {
-        AccountDTO result;
         
-        AccountDAO dao = new AccountDAO();
+        OrderDTO result =null;
         
-        result = dao.getAccountById(customerID);
+        Connection con = MSSQLUtil.openConnection();
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        
+        String sql = "SELECT * FROM tbl_order WHERE customerID=? AND"
+                    + " orderID=? ";
+        
+        try {
+            stm = con.prepareCall(sql);
+            stm.setString(1, loginAcc.getAccountID());
+            stm.setString(2, orderID);
+            
+            rs = stm.executeQuery();
+            
+            while(rs.next()) {
+                Date orderDate = rs.getDate("orderDate");
+                float total = rs.getFloat("total");
+                String address = rs.getString("address");
+                String phone = rs.getString("phone");
+                
+                OrderDTO dto = new OrderDTO(orderID, orderDate, loginAcc, 
+                                    total, address, phone);
+                this.getDetails(orderID, dto.getItems());
+                
+                result = dto;
+            }
+            
+        } finally {
+            if (rs!=null) {
+                rs.close();
+            }
+            if (stm!=null) {
+                stm.close();
+            }
+            
+            con.close();
+        }
         
         return result;
     }
+    
+//    protected AccountDTO getCustomer(String customerID) 
+//            throws ClassNotFoundException, SQLException {
+//        AccountDTO result;
+//        
+//        AccountDAO dao = new AccountDAO();
+//        
+//        result = dao.getAccountById(customerID);
+//        
+//        return result;
+//    }
     
     protected List<OrderDetailDTO> getDetails(String orderID,
             List<OrderDetailDTO> itemList) 

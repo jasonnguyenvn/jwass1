@@ -46,7 +46,12 @@ if(orderList!=null) {
             <tbody>
                 <%
                 int count = 1;
+                String urlRewriting = "Controller?btAction=view_detail&orderID=";
+                String urlRwPart2 = "&txtFromDate=" + fromDate 
+                        + "&txtToDate=" + toDate;
                 for(OrderDTO dto : orderList) {
+                    String detailUrl = urlRewriting + dto.getOrderID() 
+                            + urlRwPart2;
                     %>
                     <tr>
                         <td>
@@ -65,7 +70,7 @@ if(orderList!=null) {
                             <%= dto.getTotal() %>
                         </td>
                         <td>
-                            <a href="">Detail</a>
+                            <a href="<%= detailUrl %>">Detail</a>
                         </td>
                     </tr>
                     

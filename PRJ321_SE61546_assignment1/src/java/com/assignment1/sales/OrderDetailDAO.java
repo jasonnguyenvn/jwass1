@@ -38,7 +38,7 @@ public class OrderDetailDAO implements Serializable {
             
             rs = stm.executeQuery();
             
-            if(rs.next()) {
+            while(rs.next()) {
                 int id = rs.getInt("id");
                 int quantity = rs.getInt("quantity");
                 float unitPrice = rs.getFloat("unitPrice");

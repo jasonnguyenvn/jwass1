@@ -28,6 +28,10 @@
         <servlet-name>OrderSearchError</servlet-name>
         <servlet-class>com.assignment1.sales.OrderSearchError</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewOrderDetailServlet</servlet-name>
+        <servlet-class>com.assignment1.sales.servlets.ViewOrderDetailServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ControllerServlet</servlet-name>
         <url-pattern>/Controller</url-pattern>
@@ -55,6 +59,10 @@
     <servlet-mapping>
         <servlet-name>OrderSearchError</servlet-name>
         <url-pattern>/OrderSearchError</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewOrderDetailServlet</servlet-name>
+        <url-pattern>/Actions/ViewOrderDetailServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

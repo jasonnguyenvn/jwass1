@@ -28,7 +28,7 @@
         %>
         
         
-        <form action="Controller" method="POST">
+        <form action="Controller" method="GET">
             <table>
                 <tr>
                     <td width="80px">From Date:</td>
@@ -85,7 +85,22 @@
             </table>
         </form>
         
-        
+        <%
+            if (errorObj != null) {
+                if (errorObj.getToDateEalierThanFromDateErr() != null) {
+                    %>
+                    <h3>
+                    <font color="red">
+                        Warning: <%= errorObj.getToDateEalierThanFromDateErr() %>
+                    </font>
+                    </h3>
+                    <%
+                    out.print("</body></html>");
+                    return;
+                }
+            }
+
+        %>
         
         <%@include file="OrderList.jsp" %>
     </body>
