@@ -13,16 +13,16 @@ import java.util.Objects;
  *
  * @author Hau
  */
-public class productDTO implements Serializable {
+public class ProductDTO implements Serializable {
     private String productID;
     private String productName;
     private float price;
     private int quantity;
 
-    public productDTO() {
+    public ProductDTO() {
     }
 
-    public productDTO(String productID, String productName, float price, int quantity) {
+    public ProductDTO(String productID, String productName, float price, int quantity) {
         this.productID = productID;
         this.productName = productName;
         this.price = price;
@@ -76,13 +76,13 @@ public class productDTO implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final productDTO other = (productDTO) obj;
+        final ProductDTO other = (ProductDTO) obj;
         return Objects.equals(this.productID, other.productID);
     }
 
     @Override
     public String toString() {
-        return "productDTO{" + "productID=" + productID + '}';
+        return productID;
     }
     
     

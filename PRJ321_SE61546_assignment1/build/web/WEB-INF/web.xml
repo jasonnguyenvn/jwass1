@@ -20,6 +20,14 @@
         <servlet-name>RegisterServlet</servlet-name>
         <servlet-class>com.assignment1.account.servlets.RegisterServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SearchOrderServlet</servlet-name>
+        <servlet-class>com.assignment1.sales.servlets.SearchOrderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrderSearchError</servlet-name>
+        <servlet-class>com.assignment1.sales.OrderSearchError</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ControllerServlet</servlet-name>
         <url-pattern>/Controller</url-pattern>
@@ -39,6 +47,14 @@
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/Actions/RegisterServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchOrderServlet</servlet-name>
+        <url-pattern>/SearchOrderServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderSearchError</servlet-name>
+        <url-pattern>/OrderSearchError</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

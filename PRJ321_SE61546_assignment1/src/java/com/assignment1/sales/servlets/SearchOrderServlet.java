@@ -4,27 +4,30 @@
  * and open the template in the editor.
  */
 
-package com.assignment1.account.servlets;
+package com.assignment1.sales.servlets;
 
-import com.assignment1.account.AccountDAO;
-import com.assignment1.account.AccountDTO;
-import com.assignment1.account.AccountLoginError;
+import com.assignment1.sales.OrderDAO;
+import com.assignment1.sales.OrderDTO;
+import com.assignment1.sales.OrderSearchError;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Hau
  */
-public class LoginServlet extends HttpServlet {
-    private final String loginPage = "/views/login.jsp";
+public class SearchOrderServlet extends HttpServlet {
+    private final String searchPage = "/views/search.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,58 +42,52 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            AccountLoginError erroObj = new AccountLoginError();
-            AccountDAO dao = new AccountDAO();
-            String accountID = request.getParameter("accountID");
-            String password = request.getParameter("password");
+            String txtFromDate = request.getParameter("txtFromDate");
+            String txtToDate = request.getParameter("txtToDate");
+            
+            Date fromDate = null, toDate = null;
+            OrderSearchError errorObj = new OrderSearchError();
             
             try {
-                if (accountID.equals("")) {
-                    erroObj.setNullUsernameErr("Username cannot be null.");
-                }
-
-                if (password.equals("")) {
-                    erroObj.setNullPasswordErr("Password cannot be null.");
-                }
-            } catch (NullPointerException ex) {
-                log("Someone send bad request: " + ex.getMessage());
-                erroObj.setNullPointerErr("BAD REQUEST");
-            } 
+                fromDate = Date.valueOf(txtFromDate);
+            } catch (IllegalArgumentException ex) {
+                log("User input invalid date format to search orders: " 
+                        + ex.getMessage());
+                errorObj.setInvalidFromDateFormatErr("Invalid F");
+            }
             
-            if(erroObj.isRaisedErrors()) {
-                request.setAttribute("ERROROBJ", erroObj);
-                RequestDispatcher dr = request.getRequestDispatcher(loginPage);
+            try {
+                toDate = Date.valueOf(txtToDate);
+            } catch (IllegalArgumentException ex) {
+                log("User input invalid date format to search orders: " 
+                        + ex.getMessage());
+                errorObj.setInvalidToDateFormatErr("Invalid F");
+            }
+            
+            if(errorObj.isRaisedErrors()) {
+                request.setAttribute("SEARCHERROBJ", errorObj);
+                RequestDispatcher dr = request.getRequestDispatcher(searchPage);
                 dr.forward(request, response);
                 return;
             }
             
-            AccountDTO dto = null;
+            OrderDAO dao = new OrderDAO();
+            List<OrderDTO> dto;
             try {
-                dto = dao.checkLogin(accountID, password);
+                dto = dao.searchOrdersByDate(fromDate, toDate);
+                request.setAttribute("ORDERLIST", dto);
+                RequestDispatcher dr = request.getRequestDispatcher(searchPage);
+                dr.forward(request, response);
                 
-            } catch (ClassNotFoundException ex) {
+            } catch (ClassNotFoundException | SQLException ex) {
+                log("SQL DB RAISED ERROR: " + ex.getMessage());
+                response.sendError(500);
+            }  catch (NullPointerException ex) {
                 log(ex.getMessage());
                 response.sendError(500);
-            } catch (SQLException ex) {
-                log(ex.getMessage());
             }
             
             
-            if (dto!=null) {
-                HttpSession session = request.getSession();
-                session.setAttribute("LOGGINUSR", dto);
-                
-                String urlRewriting = "Controller?btAction=searchPage";
-                response.sendRedirect(urlRewriting);
-                return;
-            }
-            
-            
-            erroObj.setInvalidUsernamePasswordErr("INVALID USERNAME OR PASSWORD.");
-            
-            request.setAttribute("ERROROBJ", erroObj);
-            RequestDispatcher dr = request.getRequestDispatcher(loginPage);
-            dr.forward(request, response);
         }
     }
 

@@ -4,6 +4,9 @@
     Author     : Hau
 --%>
 
+<%@page import="com.assignment1.sales.OrderDTO"%>
+<%@page import="java.util.List"%>
+<%@page import="com.assignment1.sales.OrderSearchError"%>
 <%@page import="com.assignment1.account.AccountDTO"%>
 <%@page import="com.assignment1.account.AccountLoginError"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -18,6 +21,11 @@
         
         <h1>Search Order</h1>
         
+        <%
+            OrderSearchError errorObj = (OrderSearchError) request.getAttribute("SEARCHERROBJ");
+        %>
+        
+        
         <form action="Controller" method="POST">
             <table>
                 <tr>
@@ -25,6 +33,17 @@
                     <td width="200px">
                         <input style="width:200px;" type="text" 
                                name="txtFromDate" value="" />
+                        <%
+                        if(errorObj!=null) {
+                            if(errorObj.getInvalidFromDateFormatErr()!=null) {
+                                %>
+                                <font color="red">
+                                <%= errorObj.getInvalidFromDateFormatErr() %>
+                                </font>
+                                <%
+                            }
+                        }
+                        %>
                     </td>
                 </tr>
                 <tr>
@@ -32,6 +51,17 @@
                     <td width="200px">
                         <input style="width:200px;" type="text" 
                                name="txtToDate" value="" />
+                        <%
+                        if(errorObj!=null) {
+                            if(errorObj.getInvalidToDateFormatErr()!=null) {
+                                %>
+                                <font color="red">
+                                <%= errorObj.getInvalidToDateFormatErr() %>
+                                </font>
+                                <%
+                            }
+                        }
+                        %>
                     </td>
                 </tr>
                 <tr>
@@ -44,5 +74,16 @@
                 </tr>
             </table>
         </form>
+        
+        <%
+        List<OrderDTO> orderList = (List<OrderDTO>) request.getAttribute("ORDERLIST");
+        String listPage = "OrderList.jsp";
+        
+        if(orderList!=null) {
+            RequestDispatcher dr = request.getRequestDispatcher(listPage);
+            dr.forward(request, response);
+        }
+        
+        %>
     </body>
 </html>

@@ -8,7 +8,7 @@ package com.assignment1.sales;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,7 +16,7 @@ import java.util.Objects;
  *
  * @author Hau
  */
-public class orderDTO implements Serializable {
+public class OrderDTO implements Serializable {
     private String orderID;
     private Date orderDate;
     private String customerID;
@@ -24,13 +24,13 @@ public class orderDTO implements Serializable {
     private String address;
     private String phone;
     
-    private List<orderDetailDTO> items;
+    private List<OrderDetailDTO> items;
 
-    public orderDTO() {
+    public OrderDTO() {
         items = new ArrayList<>();
     }
 
-    public orderDTO(String orderID, Date orderDate, String customerID, 
+    public OrderDTO(String orderID, Date orderDate, String customerID, 
             float total, String address, String phone) {
         items = new ArrayList<>();
         
@@ -90,6 +90,16 @@ public class orderDTO implements Serializable {
         this.phone = phone;
     }
 
+    public List<OrderDetailDTO> getItems() {
+        return items;
+    }
+
+    public void setItems(List<OrderDetailDTO> items) {
+        this.items = items;
+    }
+    
+    
+
     @Override
     public int hashCode() {
         int hash = 5;
@@ -105,7 +115,7 @@ public class orderDTO implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final orderDTO other = (orderDTO) obj;
+        final OrderDTO other = (OrderDTO) obj;
         return Objects.equals(this.orderID, other.orderID);
     }
 

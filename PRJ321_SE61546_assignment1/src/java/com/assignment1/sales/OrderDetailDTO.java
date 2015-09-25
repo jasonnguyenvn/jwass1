@@ -12,20 +12,20 @@ import java.io.Serializable;
  *
  * @author Hau
  */
-public class orderDetailDTO implements Serializable {
+public class OrderDetailDTO implements Serializable {
     private int id;
-    private String productID;
+    private ProductDTO product;
     private int quantity;
     private float unitPrice;
     private String unitItem;
     private float total;
     private String orderID;
 
-    public orderDetailDTO() {
+    public OrderDetailDTO() {
     }
 
-    public orderDetailDTO(String productID, int quantity, float unitPrice, String unitItem, float total, String orderID) {
-        this.productID = productID;
+    public OrderDetailDTO(ProductDTO product, int quantity, float unitPrice, String unitItem, float total, String orderID) {
+        this.product = product;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
         this.unitItem = unitItem;
@@ -33,15 +33,17 @@ public class orderDetailDTO implements Serializable {
         this.orderID = orderID;
     }
 
-    public orderDetailDTO(int id, String productID, int quantity, float unitPrice, String unitItem, float total, String orderID) {
+    public OrderDetailDTO(int id, ProductDTO product, int quantity, float unitPrice, String unitItem, float total, String orderID) {
         this.id = id;
-        this.productID = productID;
+        this.product = product;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
         this.unitItem = unitItem;
         this.total = total;
         this.orderID = orderID;
     }
+
+    
 
     public int getId() {
         return id;
@@ -51,13 +53,7 @@ public class orderDetailDTO implements Serializable {
         this.id = id;
     }
 
-    public String getProductID() {
-        return productID;
-    }
-
-    public void setProductID(String productID) {
-        this.productID = productID;
-    }
+    
 
     public int getQuantity() {
         return quantity;
@@ -99,6 +95,16 @@ public class orderDetailDTO implements Serializable {
         this.orderID = orderID;
     }
 
+    public ProductDTO getProduct() {
+        return product;
+    }
+
+    public void setProduct(ProductDTO product) {
+        this.product = product;
+    }
+    
+    
+
     @Override
     public int hashCode() {
         int hash = 5;
@@ -114,13 +120,13 @@ public class orderDetailDTO implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final orderDetailDTO other = (orderDetailDTO) obj;
+        final OrderDetailDTO other = (OrderDetailDTO) obj;
         return this.id == other.id;
     }
 
     @Override
     public String toString() {
-        return "orderDetailDTO{" + "id=" + id + ", productID=" + productID + ", orderID=" + orderID + '}';
+        return "orderDetailDTO{" + "id=" + id + ", productID=" + product + ", orderID=" + orderID + '}';
     }
     
     
