@@ -57,14 +57,14 @@ public class OrderDetailDAO implements Serializable {
         return result;
     }
     
-    protected boolean updateOrderTotal(float detailTotal, String orderID, 
+    protected boolean updateOrderTotalDelete(float detailTotal, String orderID, 
             AccountDTO loginAcc, Connection con) throws SQLException {
         OrderDAO dao = new OrderDAO();
         
         return dao.updateOrderTotalDeleteDetail(detailTotal, orderID, loginAcc, con);
     }
     
-    public boolean deleteOrderDetailsByOrderDetailId(int id, String orderID, 
+    public boolean deleteOrderDetails(int id, String orderID, 
             AccountDTO loginAcc) 
             throws SQLException, ClassNotFoundException, OnlyOneDetailForOrderException {
         boolean result = false;
@@ -112,7 +112,7 @@ public class OrderDetailDAO implements Serializable {
             float detailTotal = rs2.getFloat("total");
             rs2.close();
             
-            boolean updateTotalRs = this.updateOrderTotal(detailTotal, orderID,
+            boolean updateTotalRs = this.updateOrderTotalDelete(detailTotal, orderID,
                                     loginAcc, con);
             
             if (updateTotalRs == false) {
@@ -159,6 +159,102 @@ public class OrderDetailDAO implements Serializable {
             }
             if (stm3!=null) {
                 stm3.close();
+            }
+            
+            con.close();
+        }
+        
+        
+        return result;
+    }
+    
+    protected boolean updateOrderTotalQuanlity(float preDetailTotal, 
+            float detailTotal, String orderID, 
+            AccountDTO loginAcc, Connection con) 
+            throws SQLException {
+        OrderDAO dao = new OrderDAO();
+        
+        return dao.updateOrderTotalUpdateDetailQuanlity(preDetailTotal,
+                detailTotal, orderID, loginAcc, con);
+    }
+    
+    
+    public boolean updateOrderDetailQuantity(int id, 
+            String orderID, int quantity, AccountDTO loginAcc) 
+            throws SQLException, ClassNotFoundException {
+        boolean result = false;
+        
+        Connection con = MSSQLUtil.openConnection();
+        con.setAutoCommit(false);
+        
+        PreparedStatement stm1 = null;
+        PreparedStatement stm2 = null;
+        
+        String sql1 = "SELECT total, unitPrice FROM tbl_orderDetail WHERE id=? ";
+        String sql2 = "UPDATE tbl_orderDetail SET quantity=?, total=?"
+                + " WHERE id=? AND orderID=? ";
+        
+        try {
+            
+            stm1 = con.prepareCall(sql1);
+            stm1.setInt(1, id);
+            ResultSet rs2 = stm1.executeQuery();
+            if (rs2.next() == false) {
+                con.rollback();
+                rs2.close();
+                stm1.close();
+                con.close();
+                return false;
+            }
+            
+            float preTotal = rs2.getFloat("total");
+            float unitPrice = rs2.getFloat("unitPrice");
+            float finalTotal = unitPrice * quantity;
+            rs2.close();
+            
+            boolean updateTotalRs = this
+                    .updateOrderTotalQuanlity(preTotal, finalTotal, 
+                            orderID, loginAcc, con);
+            
+            if (updateTotalRs == false) {
+                con.rollback();
+                rs2.close();
+                stm1.close();
+                con.close();
+                return false;
+            }
+            
+            
+            stm2 = con.prepareCall(sql2);
+            stm2.setInt(1, quantity);
+            stm2.setFloat(2, finalTotal);
+            stm2.setInt(3, id);
+            stm2.setString(4, orderID);
+
+            int rs = stm2.executeUpdate();
+
+            if(rs > 0) {
+                result = true;
+                con.commit();
+            } else {
+                con.rollback();
+            }
+        } catch (SQLException ex) {
+            con.rollback();
+            if (stm1!=null) {
+                stm1.close();
+            }
+            if (stm2!=null) {
+                stm2.close();
+            }
+            con.close();
+            throw new SQLException("COULD NOT DELETE DETAIL - ROLLBACK !!! " + ex);
+        }  finally {
+            if (stm1!=null) {
+                stm1.close();
+            }
+            if (stm2!=null) {
+                stm2.close();
             }
             
             con.close();

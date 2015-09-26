@@ -34,6 +34,60 @@ public class OrderDAO implements Serializable {
 //        
 //    }
     
+    
+    // Must use this function in a transaction!!!
+    public boolean updateOrderTotalUpdateDetailQuanlity(float preDetailTotal, 
+            float detailTotal, String orderID, 
+            AccountDTO loginAcc, Connection con) 
+            throws SQLException {
+        boolean result = false;
+        
+        String sql0 = "SELECT total FROM tbl_order WHERE orderID=? AND customerID=? ";
+        PreparedStatement stm0 = con.prepareCall(sql0);
+        stm0.setString(1, orderID);
+        stm0.setString(2, loginAcc.getAccountID());
+        ResultSet rs0 = stm0.executeQuery();
+        if(rs0.next()==false) {
+            con.rollback();
+            rs0.close();
+            stm0.close();
+            return false;
+        }
+        float orderTotal = rs0.getFloat("total");
+        orderTotal = (orderTotal  - preDetailTotal) + detailTotal;
+        
+        rs0.close();
+        stm0.close();
+        
+        PreparedStatement stm;
+        
+        
+        // Start transaction by set autoCommit = false;
+        con.setAutoCommit(false);
+        
+        String sql = "UPDATE tbl_order SET total=?"
+                + " WHERE orderID=? AND customerID=? ";
+        
+            
+        stm = con.prepareCall(sql);
+        stm.setFloat(1,  orderTotal);
+        stm.setString(2, orderID);
+        stm.setString(3, loginAcc.getAccountID());
+
+        int rs = stm.executeUpdate();
+
+        if(rs > 0) {
+            result = true;
+        } else {
+            throw new SQLException("Could not find Order "
+                    + "or invalid order for login account.");
+        }
+        
+        stm.close();
+        
+        return result;
+    }
+    
     // Must use this function in a transaction!!!
     public boolean updateOrderTotalDeleteDetail(float detailTotal, String orderID, 
             AccountDTO loginAcc, Connection con) 

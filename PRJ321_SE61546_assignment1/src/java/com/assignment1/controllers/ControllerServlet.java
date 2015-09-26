@@ -30,6 +30,7 @@ public class ControllerServlet extends HttpServlet {
     private final String searchOrderServlet = "Actions/SearchOrderServlet";
     private final String viewOrderDetailServlet = "Actions/ViewOrderDetailServlet";
     private final String deleteOrderDetailItemServlet = "Actions/DeleteOrderDetailItemServlet";
+    private final String updateOrderQuantityServlet = "Actions/UpdateOrderQuantityServlet";
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -118,7 +119,16 @@ public class ControllerServlet extends HttpServlet {
                 
                 
                 url = deleteOrderDetailItemServlet;
-            }  else {
+            }  else if(button.equals("Update")) {
+                
+                if(isLogin==false) {
+                    response.sendRedirect("Controller");
+                    return;
+                }
+                
+                
+                url = updateOrderQuantityServlet;
+            } else {
                 response.sendError(404);
                 return;
             }

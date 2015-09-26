@@ -7,8 +7,10 @@
 package com.assignment1.sales.servlets;
 
 import com.assignment1.account.AccountDTO;
+import com.assignment1.sales.OrderDAO;
+import com.assignment1.sales.OrderDTO;
 import com.assignment1.sales.OrderDetailDAO;
-import com.assignment1.sales.OrderDetailDeleteError;
+import com.assignment1.sales.OrderDetailUpdateError;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -25,9 +27,9 @@ import javax.servlet.http.HttpSession;
  *
  * @author Hau
  */
-public class DeleteOrderDetailItemServlet extends HttpServlet {
-    private final String viewDetailPage = "/Actions/ViewOrderDetailServlet";
-    
+public class UpdateOrderQuantityServlet extends HttpServlet {
+    private final String viewOrderDetailPage = "/views/OrderDetails.jsp";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,29 +43,39 @@ public class DeleteOrderDetailItemServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
-            String pkID = request.getParameter("ID");
-            int id = -1;
-            
-            try {
-                id = Integer.parseInt(pkID);
-            } catch (NumberFormatException | NullPointerException ex) {
-                log("User try to request bad query. " + ex.getMessage());
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-                return;
-            }
-            
+            String pk  = request.getParameter("pk");
+            String txtQuantity = request.getParameter("txtQuantity");
             String orderID = request.getParameter("orderID");
-            
-            if (id < 0 || orderID == null) {
-                 log("User try to request bad query. ");
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-                return;
+            if(pk==null || txtQuantity==null || orderID==null) {
+                response.sendError(400);
             }
             
-            OrderDetailDeleteError errorObj = new OrderDetailDeleteError();
+            OrderDetailUpdateError erroObj = new OrderDetailUpdateError();
+            
+            
+            int id = -1;
+            try {
+                id = Integer.parseInt(pk);
+            } catch (NumberFormatException ex) {
+                log(ex.getMessage());
+                response.sendError(400);
+            }
+            
+            int quantity = -1;
+            try {
+                quantity = Integer.parseInt(txtQuantity);
+            } catch (NumberFormatException ex) {
+                log(ex.getMessage());
+                erroObj.setInvalidQuantityValueErr("INVALID QUANTITY VALUE!");
+            }
+            
+            if(quantity < 1) {
+                erroObj.setQuantityLessThanOneErr("Quantity cannot be less than 1!");
+            }
+            
+            
+            
             OrderDetailDAO dao = new OrderDetailDAO();
-             boolean result = false;
             try {
                 HttpSession session ;
                 AccountDTO loginUser = null;
@@ -75,52 +87,37 @@ public class DeleteOrderDetailItemServlet extends HttpServlet {
                     response.sendRedirect("Controller");
                 }
                 
-                result = dao.deleteOrderDetails(id, orderID, loginUser);
-            } catch (SQLException ex) {
-                log(ex.getMessage());
-                errorObj.setCouldNotDeleteOrderDetail("Could not delete order "
-                        + "detail. Please, ask the web master to solve this problem.");
+                OrderDAO dao2 = new OrderDAO();
                 
-            } catch (ClassNotFoundException ex) {
+                if(erroObj.isRaisedErrors()) {
+                    OrderDTO dto = dao2.getOrderByID(orderID, loginUser);
+                    request.setAttribute("DTO", dto);
+                    request.setAttribute("UPDATEORDERERROROBJ", erroObj);
+
+                    RequestDispatcher dr = request.getRequestDispatcher(viewOrderDetailPage);
+                    dr.forward(request, response);
+                    return;
+                }
+                
+                
+                boolean result = dao.updateOrderDetailQuantity(id, orderID, quantity, loginUser);
+                
+                if (result) {
+                    OrderDTO dto = dao2.getOrderByID(orderID, loginUser);
+                    request.setAttribute("DTO", dto);
+                    RequestDispatcher dr = request.getRequestDispatcher(viewOrderDetailPage);
+                    dr.forward(request, response);
+                    return;
+                }
+                
+                ServletException ex = new ServletException("UNKNOWN ERROR!");
+                log(ex.getMessage(), ex);
+                response.sendError(500);
+            } catch (    SQLException | ClassNotFoundException ex) {
                 log(ex.getMessage());
                 response.sendError(500);
-            } catch (OrderDetailDAO.OnlyOneDetailForOrderException ex) {
-                log(ex.getMessage());
-                errorObj.setOnlyOneDetailForOrder("COULD NOT DELETE THIS DETAIL BECAUSE "
-                    + "THERE IS NO MORE ORDER DETAIL FOR THIS ORDER! Please, "
-                        + "contact to customer service for more information.");
-                request.setAttribute("DELDETAILERROROBJ", errorObj);
-                RequestDispatcher dr = request.getRequestDispatcher(viewDetailPage);
-                dr.forward(request, response);
-                return;
             }
             
-            if (result == false) {
-                
-                errorObj.setCouldNotDeleteOrderDetail("Could not delete order "
-                        + "detail. Invalid request or Order/Order Detail not found.");
-                
-            }
-            
-            if (errorObj.isRaisedErrors()) {
-                request.setAttribute("DELDETAILERROROBJ", errorObj);
-                
-                RequestDispatcher dr = request.getRequestDispatcher(viewDetailPage);
-                dr.forward(request, response);
-                return;
-            }
-            
-            String urlRewriting = "Controller?btAction=view_detail&orderID="
-                                    + orderID;
-            
-            String fromDate = request.getParameter("txtFromDate");
-            String toDate = request.getParameter("txtToDate");
-            if (fromDate != null && toDate != null) {
-                urlRewriting += "&txtFromDate=" + fromDate 
-                        + "&txtToDate=" + toDate;
-            }
-            
-            response.sendRedirect(urlRewriting);
             
         }
     }

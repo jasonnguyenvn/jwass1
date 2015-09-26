@@ -4,6 +4,7 @@
     Author     : Hau
 --%>
 
+<%@page import="com.assignment1.sales.OrderDetailUpdateError"%>
 <%@page import="com.assignment1.sales.OrderDetailDeleteError"%>
 <%@page import="com.assignment1.sales.OrderDetailDTO"%>
 <%@page import="com.assignment1.sales.OrderDTO"%>
@@ -40,6 +41,36 @@
                         <font color="red">
                         Delete Order Detail occurs error:<br/>
                         <%= delDetailErrorObj.getOnlyOneDetailForOrder() %>
+                        </font>
+                    </h3>
+                    <%
+                }
+                
+            }
+            
+            OrderDetailUpdateError updateErrorObj =
+                    (OrderDetailUpdateError)
+                    request.getAttribute("UPDATEORDERERROROBJ");
+            
+            if(updateErrorObj != null) {
+                if(updateErrorObj.getInvalidQuantityValueErr()!=null) {
+                    %>
+                    <h3>
+                        <font color="red">
+                        Delete Order Detail occurs error:<br/>
+                        <%= updateErrorObj.getInvalidQuantityValueErr() %>
+                        </font>
+                    </h3>
+                    <%
+                }
+                
+                
+                if(updateErrorObj.getQuantityLessThanOneErr()!=null) {
+                    %>
+                    <h3>
+                        <font color="red">
+                        Delete Order Detail occurs error:<br/>
+                        <%= updateErrorObj.getQuantityLessThanOneErr() %>
                         </font>
                     </h3>
                     <%
@@ -116,6 +147,8 @@
                         
                         String delUrl = urlRewriting + item.getId() + urlRwPart2;
                         %>
+                        
+                         <form action="Controller" method="POST">
                         <tr>
                             <td>
                                 <%= count++ %>
@@ -127,7 +160,8 @@
                                 <%= item.getUnitItem() %>
                             </td>
                             <td>
-                                <%= item.getQuantity() %>
+                                <input type="text" name="txtQuantity" 
+                                       value="<%= item.getQuantity() %>" />
                             </td>
                             <td>
                                 <%= item.getUnitPrice() %>
@@ -136,12 +170,21 @@
                                 <%= item.getTotal() %>
                             </td>
                             <td>
-                                
+                                <input type="hidden" name="orderID" 
+                                       value="<%= dto.getOrderID() %>" />
+                                <input type="hidden" name="pk" 
+                                       value="<%= item.getId() %>" />
+                                <input type="hidden" name="txtFromDate" 
+                                       value="<%= fromDate %>" />
+                                <input type="hidden" name="txtToDate" 
+                                       value="<%= toDate %>" />
+                                <input type="submit" value="Update" name="btAction" />
                             </td>
                             <td align="center" >
                                 <a href="<%= delUrl %>">X</a>
                             </td>
                         </tr>
+                         </form>
                         <%
                     }
                 
