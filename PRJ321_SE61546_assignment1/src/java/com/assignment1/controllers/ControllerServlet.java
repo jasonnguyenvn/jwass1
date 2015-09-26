@@ -29,6 +29,7 @@ public class ControllerServlet extends HttpServlet {
     private final String registerServlet = "Actions/RegisterServlet";
     private final String searchOrderServlet = "Actions/SearchOrderServlet";
     private final String viewOrderDetailServlet = "Actions/ViewOrderDetailServlet";
+    private final String deleteOrderDetailItemServlet = "Actions/DeleteOrderDetailItemServlet";
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -86,8 +87,20 @@ public class ControllerServlet extends HttpServlet {
                 }
                 url = signUpPage;
             } else if(button.equals("Sign Up!")) {
+                if(isLogin==false) {
+                    response.sendRedirect("Controller");
+                    return;
+                }
+                
+                
                 url = registerServlet;
             }  else if(button.equals("Search")) {
+                
+                if(isLogin==false) {
+                    response.sendRedirect("Controller");
+                    return;
+                }
+                
                 url = searchOrderServlet;
             } else if(button.equals("view_detail")) {
                 if(isLogin==false) {
@@ -96,7 +109,16 @@ public class ControllerServlet extends HttpServlet {
                 }
                 
                 url = viewOrderDetailServlet;
-            } else {
+            } else if(button.equals("del_detail")) {
+                
+                if(isLogin==false) {
+                    response.sendRedirect("Controller");
+                    return;
+                }
+                
+                
+                url = deleteOrderDetailItemServlet;
+            }  else {
                 response.sendError(404);
                 return;
             }

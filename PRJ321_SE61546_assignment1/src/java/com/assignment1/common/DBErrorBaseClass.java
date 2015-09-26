@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.assignment1.account;
+package com.assignment1.common;
 
 import java.io.Serializable;
 
@@ -12,7 +12,7 @@ import java.io.Serializable;
  *
  * @author Hau
  */
-public abstract class AccountErrorBaseClass implements Serializable {
+public abstract class DBErrorBaseClass implements Serializable {
     private boolean raisedErrors = false;
     
     private String nullPointerErr;

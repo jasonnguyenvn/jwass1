@@ -4,6 +4,7 @@
     Author     : Hau
 --%>
 
+<%@page import="com.assignment1.sales.OrderDetailDeleteError"%>
 <%@page import="com.assignment1.sales.OrderDTO"%>
 <%@page import="java.util.List"%>
 <%@page import="com.assignment1.sales.OrderSearchError"%>
@@ -18,6 +19,8 @@
     </head>
     <body>
         <%@include file="welcome.jsp" %>
+        
+        
         
         <h1>Search Order</h1>
         

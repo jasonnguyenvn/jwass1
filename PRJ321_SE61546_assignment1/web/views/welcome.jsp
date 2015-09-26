@@ -12,7 +12,7 @@
 
     if(loginUser!=null) {
         %>
-        <font color="red">
+        <font color="green">
         Welcome, <%= loginUser.getAccountID() %>
         </font>
         <%

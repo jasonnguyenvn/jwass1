@@ -32,6 +32,10 @@
         <servlet-name>ViewOrderDetailServlet</servlet-name>
         <servlet-class>com.assignment1.sales.servlets.ViewOrderDetailServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteOrderDetailItemServlet</servlet-name>
+        <servlet-class>com.assignment1.sales.servlets.DeleteOrderDetailItemServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ControllerServlet</servlet-name>
         <url-pattern>/Controller</url-pattern>
@@ -64,6 +68,10 @@
         <servlet-name>ViewOrderDetailServlet</servlet-name>
         <url-pattern>/Actions/ViewOrderDetailServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteOrderDetailItemServlet</servlet-name>
+        <url-pattern>/Actions/DeleteOrderDetailItemServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
@@ -83,6 +91,10 @@
     <error-page>
         <error-code>403</error-code>
         <location>/403.html</location>
+    </error-page>
+    <error-page>
+        <error-code>400</error-code>
+        <location>/400.html</location>
     </error-page>
     <security-constraint>
         <display-name>Constraint1</display-name>

@@ -6,11 +6,13 @@
 
 package com.assignment1.account;
 
+import com.assignment1.common.DBErrorBaseClass;
+
 /**
  *
  * @author Hau
  */
-public class AccountLoginError extends AccountErrorBaseClass {
+public class AccountLoginError extends DBErrorBaseClass {
     
     private String invalidUsernamePasswordErr;
     private String nullUsernameErr;

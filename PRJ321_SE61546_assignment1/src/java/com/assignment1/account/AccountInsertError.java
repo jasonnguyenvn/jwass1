@@ -5,11 +5,14 @@
  */
 
 package com.assignment1.account;
+
+import com.assignment1.common.DBErrorBaseClass;
+
 /**
  *
  * @author Hau
  */
-public class AccountInsertError extends AccountErrorBaseClass {
+public class AccountInsertError extends DBErrorBaseClass {
     private String usernameLengthErr;
     private String customerNameLengthErr;
     private String passwordLengthErr;

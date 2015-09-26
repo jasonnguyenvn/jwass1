@@ -6,22 +6,14 @@
 
 package com.assignment1.sales;
 
-import java.io.Serializable;
+import com.assignment1.common.DBErrorBaseClass;
 
 /**
  *
  * @author Hau
  */
-public class OrderSearchError implements Serializable {
-    boolean raisedErrors = false;
-
-    public boolean isRaisedErrors() {
-        return raisedErrors;
-    }
-
-    public void setRaisedErrors(boolean raisedErrors) {
-        this.raisedErrors = raisedErrors;
-    }
+public class OrderSearchError extends DBErrorBaseClass {
+    
     
     String invalidFromDateFormatErr;
     String invalidToDateFormatErr;
