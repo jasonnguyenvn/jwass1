@@ -140,75 +140,75 @@ public class OrderDAO implements Serializable {
     }
     
     
-    protected boolean deleteOrderDetails(String orderID, Connection con) 
-            throws SQLException {
-        boolean result;
-        
-        OrderDetailDAO dao = new OrderDetailDAO();
-        
-        result = dao.deleteOrderDetailsByOrderId(orderID, con);
-        
-        return result;
-    }
-    
-    public final int DELETE_SUCCESSFULLY_NO_DETAILS_DELETED = 1;
-    public final int DELETE_SUCCESSFULLY_DETAILS_DELETED = 2;
-    public final int DELETE_UNSUCCESSFULLY_ROLLBACK = 0;
-    
-    public int deleteOrderByOrderId(String orderID, AccountDTO loginAcc) 
-            throws ClassNotFoundException, SQLException {
-        int result = DELETE_UNSUCCESSFULLY_ROLLBACK;
-        
-        Connection con = MSSQLUtil.openConnection();
-        PreparedStatement stm = null;
-        
-        // Start transaction by set autoCommit = false;
-        con.setAutoCommit(false);
-        
-        String sql = "DELETE FROM tbl_order WHERE orderID=? AND customerID=? ";
-        
-        try {
-            boolean delDetailsResult = this.deleteOrderDetails(orderID, con);
-            
-            stm = con.prepareCall(sql);
-            stm.setString(1, orderID);
-            stm.setString(2, loginAcc.getAccountID());
-
-            int rs = stm.executeUpdate();
-
-            if(rs > 0) {
-                if(delDetailsResult == true) {
-                    result = DELETE_SUCCESSFULLY_DETAILS_DELETED;
-                } else {
-                    result = DELETE_SUCCESSFULLY_NO_DETAILS_DELETED;
-                }
-                
-                
-                // End Transsaction
-                con.commit();
-            } else {
-                con.rollback();
-            }
-        } catch (SQLException ex) {
-            con.rollback();
-            if (stm!=null) {
-                stm.close();
-            }
-            con.close();
-            throw new SQLException("DATABASE ERROR - ROLLBACK !!! " + ex);
-        } finally {
-            if (stm!=null) {
-                stm.close();
-            }
-            
-            con.setAutoCommit(true);
-            con.close();
-            
-        }
-        
-        
-        return result;
-    }
+//    protected boolean deleteOrderDetails(String orderID, Connection con) 
+//            throws SQLException {
+//        boolean result;
+//        
+//        OrderDetailDAO dao = new OrderDetailDAO();
+//        
+//        result = dao.deleteOrderDetailsByOrderId(orderID, con);
+//        
+//        return result;
+//    }
+//    
+//    public final int DELETE_SUCCESSFULLY_NO_DETAILS_DELETED = 1;
+//    public final int DELETE_SUCCESSFULLY_DETAILS_DELETED = 2;
+//    public final int DELETE_UNSUCCESSFULLY_ROLLBACK = 0;
+//    
+//    public int deleteOrderByOrderId(String orderID, AccountDTO loginAcc) 
+//            throws ClassNotFoundException, SQLException {
+//        int result = DELETE_UNSUCCESSFULLY_ROLLBACK;
+//        
+//        Connection con = MSSQLUtil.openConnection();
+//        PreparedStatement stm = null;
+//        
+//        // Start transaction by set autoCommit = false;
+//        con.setAutoCommit(false);
+//        
+//        String sql = "DELETE FROM tbl_order WHERE orderID=? AND customerID=? ";
+//        
+//        try {
+//            boolean delDetailsResult = this.deleteOrderDetails(orderID, con);
+//            
+//            stm = con.prepareCall(sql);
+//            stm.setString(1, orderID);
+//            stm.setString(2, loginAcc.getAccountID());
+//
+//            int rs = stm.executeUpdate();
+//
+//            if(rs > 0) {
+//                if(delDetailsResult == true) {
+//                    result = DELETE_SUCCESSFULLY_DETAILS_DELETED;
+//                } else {
+//                    result = DELETE_SUCCESSFULLY_NO_DETAILS_DELETED;
+//                }
+//                
+//                
+//                // End Transsaction
+//                con.commit();
+//            } else {
+//                con.rollback();
+//            }
+//        } catch (SQLException ex) {
+//            con.rollback();
+//            if (stm!=null) {
+//                stm.close();
+//            }
+//            con.close();
+//            throw new SQLException("DATABASE ERROR - ROLLBACK !!! " + ex);
+//        } finally {
+//            if (stm!=null) {
+//                stm.close();
+//            }
+//            
+//            con.setAutoCommit(true);
+//            con.close();
+//            
+//        }
+//        
+//        
+//        return result;
+//    }
     
     public List<OrderDTO> searchOrdersByDateNotLoadItems(Date fromDate, 
             Date toDate, AccountDTO loginAcc) 

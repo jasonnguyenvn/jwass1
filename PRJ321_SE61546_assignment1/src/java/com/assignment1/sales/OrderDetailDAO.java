@@ -35,27 +35,27 @@ public class OrderDetailDAO implements Serializable {
 //    }
     
     
-    public boolean deleteOrderDetailsByOrderId(String orderID, Connection con) 
-            throws   SQLException {
-        boolean result = false;
-        
-        PreparedStatement stm = null;
-        
-        String sql = "DELETE FROM tbl_orderDetail WHERE orderID=? ";
-        
-        
-        stm = con.prepareCall(sql);
-        stm.setString(1, orderID);
-
-        int rs = stm.executeUpdate();
-
-        if(rs > 0) {
-            result = true;
-        }
-        
-        
-        return result;
-    }
+//    public boolean deleteOrderDetailsByOrderId(String orderID, Connection con) 
+//            throws   SQLException {
+//        boolean result = false;
+//        
+//        PreparedStatement stm = null;
+//        
+//        String sql = "DELETE FROM tbl_orderDetail WHERE orderID=? ";
+//        
+//        
+//        stm = con.prepareCall(sql);
+//        stm.setString(1, orderID);
+//
+//        int rs = stm.executeUpdate();
+//
+//        if(rs > 0) {
+//            result = true;
+//        }
+//        
+//        
+//        return result;
+//    }
     
     protected boolean updateOrderTotalDelete(float detailTotal, String orderID, 
             AccountDTO loginAcc, Connection con) throws SQLException {
