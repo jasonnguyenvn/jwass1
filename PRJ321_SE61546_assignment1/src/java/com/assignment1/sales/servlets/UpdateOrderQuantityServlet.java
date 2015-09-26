@@ -46,9 +46,19 @@ public class UpdateOrderQuantityServlet extends HttpServlet {
             String pk  = request.getParameter("pk");
             String txtQuantity = request.getParameter("txtQuantity");
             String orderID = request.getParameter("orderID");
-            if(pk==null || txtQuantity==null || orderID==null) {
+            String fromDate = request.getParameter("txtFromDate");
+            String toDate = request.getParameter("txtToDate");
+            if(pk==null) 
                 response.sendError(400);
-            }
+            if(txtQuantity==null)
+                response.sendError(400);
+            if(orderID==null)
+                response.sendError(400);
+            if(fromDate==null)
+                response.sendError(400);
+            if(toDate==null)
+                response.sendError(400);
+                
             
             OrderDetailUpdateError erroObj = new OrderDetailUpdateError();
             
@@ -103,10 +113,11 @@ public class UpdateOrderQuantityServlet extends HttpServlet {
                 boolean result = dao.updateOrderDetailQuantity(id, orderID, quantity, loginUser);
                 
                 if (result) {
-                    OrderDTO dto = dao2.getOrderByID(orderID, loginUser);
-                    request.setAttribute("DTO", dto);
-                    RequestDispatcher dr = request.getRequestDispatcher(viewOrderDetailPage);
-                    dr.forward(request, response);
+                    String urlRewring = "Controller?btAction=view_detail"
+                            + "&orderID=" + orderID 
+                            + "&txtFromDate=" + fromDate
+                            + "&txtToDate=" + toDate;
+                    response.sendRedirect(urlRewring);
                     return;
                 }
                 
