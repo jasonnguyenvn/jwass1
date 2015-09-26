@@ -12,8 +12,6 @@ import com.assignment1.sales.OrderDetailDeleteError;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -84,16 +82,17 @@ public class DeleteOrderDetailItemServlet extends HttpServlet {
             } catch (ClassNotFoundException ex) {
                 log(ex.getMessage());
                 response.sendError(500);
-            } catch (OrderDetailDAO.OnlyOneDetailForOrderException ex) {
-                log(ex.getMessage());
-                errorObj.setOnlyOneDetailForOrder("COULD NOT DELETE THIS DETAIL BECAUSE "
-                    + "THERE IS NO MORE ORDER DETAIL FOR THIS ORDER! Please, "
-                        + "contact to customer service for more information.");
-                request.setAttribute("DELDETAILERROROBJ", errorObj);
-                RequestDispatcher dr = request.getRequestDispatcher(viewDetailPage);
-                dr.forward(request, response);
-                return;
-            }
+            } 
+//            catch (OrderDetailDAO.OnlyOneDetailForOrderException ex) {
+//                log(ex.getMessage());
+//                errorObj.setOnlyOneDetailForOrder("COULD NOT DELETE THIS DETAIL BECAUSE "
+//                    + "THERE IS NO MORE ORDER DETAIL FOR THIS ORDER! Please, "
+//                        + "contact to customer service for more information.");
+//                request.setAttribute("DELDETAILERROROBJ", errorObj);
+//                RequestDispatcher dr = request.getRequestDispatcher(viewDetailPage);
+//                dr.forward(request, response);
+//                return;
+//            }
             
             if (result == false) {
                 
