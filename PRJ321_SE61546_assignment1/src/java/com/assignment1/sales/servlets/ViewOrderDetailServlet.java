@@ -6,6 +6,7 @@
 
 package com.assignment1.sales.servlets;
 
+import com.assignment1.DBUtils.CouldNotOpenDatabaseConnection;
 import com.assignment1.account.AccountDTO;
 import com.assignment1.sales.OrderDAO;
 import com.assignment1.sales.OrderDTO;
@@ -60,12 +61,12 @@ public class ViewOrderDetailServlet extends HttpServlet {
                                     .getRequestDispatcher(viewOrderDetailsPage);
                 rd.forward(request, response);
                 
-            } catch (ClassNotFoundException ex) {
+            } catch (CouldNotOpenDatabaseConnection | ClassNotFoundException ex) {
                 log(ex.getMessage());
                 response.sendError(500);
             } catch (SQLException ex) {
                 log(ex.getMessage());
-                response.sendError(404);
+                response.sendError(500);
             }
             
         } catch (NullPointerException ex) {

@@ -6,6 +6,7 @@
 
 package com.assignment1.sales;
 
+import com.assignment1.DBUtils.CouldNotOpenDatabaseConnection;
 import com.assignment1.DBUtils.MSSQLUtil;
 import com.assignment1.account.AccountDTO;
 import java.io.Serializable;
@@ -66,7 +67,7 @@ public class OrderDetailDAO implements Serializable {
     
     public boolean deleteOrderDetails(int id, String orderID, 
             AccountDTO loginAcc) 
-            throws SQLException, ClassNotFoundException /*, OnlyOneDetailForOrderException  */ {
+            throws SQLException, ClassNotFoundException, CouldNotOpenDatabaseConnection /*, OnlyOneDetailForOrderException  */ {
         boolean result = false;
         
         Connection con = MSSQLUtil.openConnection();
@@ -182,7 +183,7 @@ public class OrderDetailDAO implements Serializable {
     
     public boolean updateOrderDetailQuantity(int id, 
             String orderID, int quantity, AccountDTO loginAcc) 
-            throws SQLException, ClassNotFoundException {
+            throws SQLException, ClassNotFoundException, CouldNotOpenDatabaseConnection {
         boolean result = false;
         
         Connection con = MSSQLUtil.openConnection();
@@ -268,7 +269,8 @@ public class OrderDetailDAO implements Serializable {
     
     public List<OrderDetailDTO> getOrderDetailsByOrderId(String orderID, 
             List<OrderDetailDTO> itemList) 
-            throws ClassNotFoundException, SQLException, NullPointerException {
+            throws ClassNotFoundException, SQLException, NullPointerException,
+            CouldNotOpenDatabaseConnection {
         
         Connection con = MSSQLUtil.openConnection();
         PreparedStatement stm = null;
@@ -314,7 +316,8 @@ public class OrderDetailDAO implements Serializable {
     }
     
     protected ProductDTO getProduct(String productID) 
-            throws ClassNotFoundException, SQLException {
+            throws ClassNotFoundException, SQLException, 
+            CouldNotOpenDatabaseConnection {
         ProductDTO result;
         
         ProductDAO dao = new ProductDAO();

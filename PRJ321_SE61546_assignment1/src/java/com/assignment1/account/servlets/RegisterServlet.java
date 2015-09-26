@@ -6,6 +6,7 @@
 
 package com.assignment1.account.servlets;
 
+import com.assignment1.DBUtils.CouldNotOpenDatabaseConnection;
 import com.assignment1.account.AccountDAO;
 import com.assignment1.account.AccountInsertError;
 import com.assignment1.common.CheckLoginObj;
@@ -86,7 +87,7 @@ public class RegisterServlet extends HttpServlet {
                 AccountDAO dao = new AccountDAO();
                 boolean result = dao.createAccount(accountID, customerName,
                                                             password, email);
-            } catch (ClassNotFoundException ex) {
+            } catch ( CouldNotOpenDatabaseConnection |  ClassNotFoundException ex) {
                 log(ex.getMessage());
                 response.sendError(500);
             } catch (SQLException ex) {

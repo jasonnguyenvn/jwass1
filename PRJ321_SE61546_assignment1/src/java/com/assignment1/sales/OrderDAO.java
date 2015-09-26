@@ -6,6 +6,7 @@
 
 package com.assignment1.sales;
 
+import com.assignment1.DBUtils.CouldNotOpenDatabaseConnection;
 import com.assignment1.DBUtils.MSSQLUtil;
 import com.assignment1.account.AccountDTO;
 import java.io.Serializable;
@@ -212,7 +213,7 @@ public class OrderDAO implements Serializable {
     
     public List<OrderDTO> searchOrdersByDateNotLoadItems(Date fromDate, 
             Date toDate, AccountDTO loginAcc) 
-            throws ClassNotFoundException, SQLException, NullPointerException {
+            throws ClassNotFoundException, SQLException, NullPointerException, CouldNotOpenDatabaseConnection {
         
         List<OrderDTO> result = new ArrayList<>();
         
@@ -262,7 +263,7 @@ public class OrderDAO implements Serializable {
     
     
     public OrderDTO getOrderByID(String orderID, AccountDTO loginAcc) 
-            throws ClassNotFoundException, SQLException {
+            throws ClassNotFoundException, SQLException, CouldNotOpenDatabaseConnection {
         
         OrderDTO result =null;
         
@@ -320,7 +321,8 @@ public class OrderDAO implements Serializable {
     
     protected List<OrderDetailDTO> getDetails(String orderID,
             List<OrderDetailDTO> itemList) 
-            throws ClassNotFoundException, SQLException,  NullPointerException {
+            throws ClassNotFoundException, SQLException,  NullPointerException,
+            CouldNotOpenDatabaseConnection {
         List<OrderDetailDTO> result;
         
         OrderDetailDAO dao = new OrderDetailDAO();

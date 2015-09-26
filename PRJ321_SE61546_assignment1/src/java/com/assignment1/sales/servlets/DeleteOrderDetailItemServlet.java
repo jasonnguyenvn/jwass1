@@ -6,6 +6,7 @@
 
 package com.assignment1.sales.servlets;
 
+import com.assignment1.DBUtils.CouldNotOpenDatabaseConnection;
 import com.assignment1.account.AccountDTO;
 import com.assignment1.sales.OrderDetailDAO;
 import com.assignment1.sales.OrderDetailDeleteError;
@@ -79,7 +80,7 @@ public class DeleteOrderDetailItemServlet extends HttpServlet {
                 errorObj.setCouldNotDeleteOrderDetail("Could not delete order "
                         + "detail. Please, ask the web master to solve this problem.");
                 
-            } catch (ClassNotFoundException ex) {
+            } catch (CouldNotOpenDatabaseConnection | ClassNotFoundException ex) {
                 log(ex.getMessage());
                 response.sendError(500);
             } 

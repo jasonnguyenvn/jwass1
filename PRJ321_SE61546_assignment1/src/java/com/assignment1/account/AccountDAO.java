@@ -6,6 +6,7 @@
 
 package com.assignment1.account;
 
+import com.assignment1.DBUtils.CouldNotOpenDatabaseConnection;
 import com.assignment1.DBUtils.MSSQLUtil;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -21,7 +22,7 @@ public class AccountDAO implements Serializable {
     
     public boolean createAccount(String accountID, String customerName,
             String password, String email) 
-            throws ClassNotFoundException, SQLException {
+            throws ClassNotFoundException, SQLException, CouldNotOpenDatabaseConnection {
         boolean result = false;
         Connection con = MSSQLUtil.openConnection();
         PreparedStatement stm = null;
@@ -53,7 +54,7 @@ public class AccountDAO implements Serializable {
     }
     
     public AccountDTO checkLogin(String accountID, String password) 
-            throws ClassNotFoundException, SQLException {
+            throws ClassNotFoundException, SQLException, CouldNotOpenDatabaseConnection {
         AccountDTO result = null;
         Connection con = MSSQLUtil.openConnection();
         PreparedStatement stm = null;
@@ -93,7 +94,7 @@ public class AccountDAO implements Serializable {
     }
     
     public AccountDTO getAccountById(String accountID) 
-            throws ClassNotFoundException, SQLException {
+            throws ClassNotFoundException, SQLException, CouldNotOpenDatabaseConnection {
         AccountDTO result = null;
         Connection con = MSSQLUtil.openConnection();
         PreparedStatement stm = null;

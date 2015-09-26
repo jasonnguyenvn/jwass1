@@ -6,6 +6,7 @@
 
 package com.assignment1.sales.servlets;
 
+import com.assignment1.DBUtils.CouldNotOpenDatabaseConnection;
 import com.assignment1.account.AccountDTO;
 import com.assignment1.sales.OrderDAO;
 import com.assignment1.sales.OrderDTO;
@@ -95,7 +96,7 @@ public class SearchOrderServlet extends HttpServlet {
                 RequestDispatcher dr = request.getRequestDispatcher(searchPage);
                 dr.forward(request, response);
                 
-            } catch (ClassNotFoundException | SQLException ex) {
+            } catch (CouldNotOpenDatabaseConnection | ClassNotFoundException | SQLException ex) {
                 log("SQL DB RAISED ERROR: " + ex.getMessage());
                 response.sendError(500);
             }  catch (NullPointerException ex) {

@@ -6,6 +6,7 @@
 
 package com.assignment1.common;
 
+import com.assignment1.DBUtils.CouldNotOpenDatabaseConnection;
 import com.assignment1.account.AccountDAO;
 import com.assignment1.account.AccountDTO;
 import com.assignment1.account.AccountLoginError;
@@ -48,7 +49,7 @@ public class NullServlet extends HttpServlet {
                     response.sendRedirect(url);
                     return;
                 }
-            } catch (ClassNotFoundException | SQLException ex) {
+            } catch (CouldNotOpenDatabaseConnection | ClassNotFoundException | SQLException ex) {
                 log(ex.getMessage());
                 response.sendError(500);
             }

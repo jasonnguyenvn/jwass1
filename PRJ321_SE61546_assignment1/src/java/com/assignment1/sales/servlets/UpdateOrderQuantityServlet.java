@@ -6,6 +6,7 @@
 
 package com.assignment1.sales.servlets;
 
+import com.assignment1.DBUtils.CouldNotOpenDatabaseConnection;
 import com.assignment1.account.AccountDTO;
 import com.assignment1.sales.OrderDAO;
 import com.assignment1.sales.OrderDTO;
@@ -122,7 +123,7 @@ public class UpdateOrderQuantityServlet extends HttpServlet {
                 ServletException ex = new ServletException("UNKNOWN ERROR!");
                 log(ex.getMessage(), ex);
                 response.sendError(500);
-            } catch (    SQLException | ClassNotFoundException ex) {
+            } catch (CouldNotOpenDatabaseConnection | SQLException | ClassNotFoundException ex) {
                 log(ex.getMessage());
                 response.sendError(500);
             }

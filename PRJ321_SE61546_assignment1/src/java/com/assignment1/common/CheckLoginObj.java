@@ -6,10 +6,10 @@
 
 package com.assignment1.common;
 
+import com.assignment1.DBUtils.CouldNotOpenDatabaseConnection;
 import com.assignment1.account.AccountDAO;
 import com.assignment1.account.AccountDTO;
 import java.sql.SQLException;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
  */
 public class CheckLoginObj {
     public boolean checkLogin(HttpServletRequest request)
-            throws ClassNotFoundException, SQLException {
+            throws ClassNotFoundException, SQLException, CouldNotOpenDatabaseConnection {
         HttpSession session = request.getSession(false);
             
             String url = "Controller?btAction=LoginPage";

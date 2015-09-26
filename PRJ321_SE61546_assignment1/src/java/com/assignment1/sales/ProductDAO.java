@@ -6,6 +6,7 @@
 
 package com.assignment1.sales;
 
+import com.assignment1.DBUtils.CouldNotOpenDatabaseConnection;
 import com.assignment1.DBUtils.MSSQLUtil;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -19,7 +20,7 @@ import java.sql.SQLException;
  */
 public class ProductDAO implements Serializable {
     public ProductDTO getProductById(String productID) 
-            throws ClassNotFoundException, SQLException {
+            throws ClassNotFoundException, SQLException, CouldNotOpenDatabaseConnection {
         ProductDTO result = null;
         
         

@@ -6,6 +6,7 @@
 
 package com.assignment1.account.servlets;
 
+import com.assignment1.DBUtils.CouldNotOpenDatabaseConnection;
 import com.assignment1.account.AccountDAO;
 import com.assignment1.account.AccountDTO;
 import com.assignment1.account.AccountLoginError;
@@ -68,11 +69,12 @@ public class LoginServlet extends HttpServlet {
             try {
                 dto = dao.checkLogin(accountID, password);
                 
-            } catch (ClassNotFoundException ex) {
+            } catch (CouldNotOpenDatabaseConnection | ClassNotFoundException ex) {
                 log(ex.getMessage());
                 response.sendError(500);
             } catch (SQLException ex) {
                 log(ex.getMessage());
+                
             }
             
             

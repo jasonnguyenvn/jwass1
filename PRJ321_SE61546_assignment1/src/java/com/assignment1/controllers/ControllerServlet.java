@@ -6,6 +6,7 @@
 
 package com.assignment1.controllers;
 
+import com.assignment1.DBUtils.CouldNotOpenDatabaseConnection;
 import com.assignment1.common.CheckLoginObj;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -59,7 +60,7 @@ public class ControllerServlet extends HttpServlet {
             boolean isLogin = false;
             try {
                 isLogin = checkLogin.checkLogin(request);
-            } catch (ClassNotFoundException | SQLException ex) {
+            } catch (CouldNotOpenDatabaseConnection | ClassNotFoundException | SQLException ex) {
                 log(ex.getMessage());
                 response.sendError(500);
             }
